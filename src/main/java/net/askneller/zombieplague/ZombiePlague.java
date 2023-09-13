@@ -1,6 +1,7 @@
 package net.askneller.zombieplague;
 
 import com.mojang.logging.LogUtils;
+import net.askneller.zombieplague.entity.SpawnEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.ZombieRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -36,6 +37,8 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegisterEvent;
 import org.slf4j.Logger;
 
+import static net.askneller.zombieplague.entity.ModEntities.SUN_PROOF_ZOMBIE;
+
 @Mod(ZombiePlague.MODID)
 public class ZombiePlague {
 
@@ -50,13 +53,11 @@ public class ZombiePlague {
     // assuming no eating or other activity
     private static final float SECONDS_PER_FOOD_TICK = 60.0f;
     // Amount to add to exhaustionLevel every tick
-    private static final float EXHAUSTION_PER_TICK = EXHAUSTION_TICK_FACTOR / (TICKS_PER_SECOND * SECONDS_PER_FOOD_TICK);
+    public static final float EXHAUSTION_PER_TICK = EXHAUSTION_TICK_FACTOR / (TICKS_PER_SECOND * SECONDS_PER_FOOD_TICK);
 
     // Reduce the amount of domesticated animals that spawn
     // The fraction of sheep, cow, pig, and chicken spawns to allow
-    private static final double DOMESTIC_ANIMAL_FRACTION = 0.2;
-
-    public static EntityType<? extends Zombie> SUN_PROOF_ZOMBIE;
+    public static final double DOMESTIC_ANIMAL_FRACTION = 0.2;
 
     public ZombiePlague() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -66,6 +67,8 @@ public class ZombiePlague {
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(SpawnEvents.class);
+        MinecraftForge.EVENT_BUS.register(ServerEvents.class);
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
@@ -82,115 +85,115 @@ public class ZombiePlague {
 
         Config.items.forEach((item) -> logger.info("ITEM >> {}", item.toString()));
     }
+//
+//    @SubscribeEvent
+//    public void onServerStarting(ServerStartingEvent event) {
+//        // Do something when the server starts
+//        logger.info("HELLO from server starting");
+//    }
 
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-        // Do something when the server starts
-        logger.info("HELLO from server starting");
-    }
-
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents {
-        @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {
-            // Some client setup code
-            logger.info("HELLO FROM CLIENT SETUP");
-            logger.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
-        }
-
-        // Register zombie renderers
-        @SubscribeEvent
-        public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
-            logger.info("Registering renderers");
-            event.registerEntityRenderer(SUN_PROOF_ZOMBIE, ZombieRenderer::new);
-        }
-    }
-
-    // Increase player starvation rate
-    @SubscribeEvent
-    public void onPlayerPostTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END && event.side == LogicalSide.SERVER) {
-            // Add exhaustion every tick
-            event.player.getFoodData().addExhaustion(EXHAUSTION_PER_TICK);
-        }
-    }
-
-    // Change mob spawning characteristics
-    // This only seems to be called for ModSpawnTypes NATURAL, SPAWNER, and CHUNK_GENERATION
-    @SubscribeEvent
-    public void onCheckEntityPlacement(MobSpawnEvent.SpawnPlacementCheck event) {
-        if (event.getEntityType().getCategory() == MobCategory.MONSTER &&
-                !event.getEntityType().equals(SUN_PROOF_ZOMBIE)) {
-            event.setResult(Event.Result.DENY);
-        }
-
-        // Reduce spawn rate of domestic animals (cows, sheep, pigs, chickens)
-        EntityType<?> type = event.getEntityType();
-        if (type.getCategory() == MobCategory.CREATURE) {
-            if (type.equals(EntityType.COW) || type.equals(EntityType.PIG)
-                    || type.equals(EntityType.CHICKEN) || type.equals(EntityType.SHEEP)) {
-                double random = Math.random();
-                if (random > DOMESTIC_ANIMAL_FRACTION) {
-                    event.setResult(Event.Result.DENY);
-                }
-            }
-        }
-    }
-
-    // Stop village entity spawns
-    @SubscribeEvent
-    public void onFinalizeSpawn(MobSpawnEvent.FinalizeSpawn event) {
-        // Villagers and Iron Golems are spawned by type STRUCTURE, which doesn't trigger a SpawnPlacementCheck
-        if (event.getEntity().getType().equals(EntityType.VILLAGER) ||
-                event.getEntity().getType().equals(EntityType.IRON_GOLEM)) {
-            event.setSpawnCancelled(true);
-        }
-    }
-
-    // Disallow zombies spawning aid
-    @SubscribeEvent
-    public void onSummonAid(ZombieEvent.SummonAidEvent event) {
-        event.setResult(Event.Result.DENY);
-    }
-
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class ModEvents {
-
-        // Register new zombie type
-        @SubscribeEvent
-        public static void setupEntities(RegisterEvent event) {
-            if (event.getRegistryKey().equals(ForgeRegistries.Keys.ENTITY_TYPES)) {
-                logger.info("Setting up mod entities");
-                SUN_PROOF_ZOMBIE = build(event.getForgeRegistry(), "zombieplague:sunproofzombie",
-                        EntityType.Builder.<Zombie>of(SunProofZombie::new, MobCategory.MONSTER)
-                                .sized(0.6F, 1.95F)
-                                .clientTrackingRange(8)
-                );
-            }
-        }
-
-        private static <T extends Entity> EntityType<T> build(IForgeRegistry<EntityType> registry,
-                                                              final String key,
-                                                              final EntityType.Builder<T> builder) {
-            EntityType<T> entity = builder.build(key);
-            registry.register(new ResourceLocation(key), entity);
-            return entity;
-        }
-
-        // Create zombie attributes
-        @SubscribeEvent
-        public static void createEntityAttribute(final EntityAttributeCreationEvent event) {
-            logger.info("Creating default SunProofZombie attributes");
-            event.put(SUN_PROOF_ZOMBIE, SunProofZombie.createAttributes().build());
-        }
-
-        // Create zombie spawn restrictions
-        @SubscribeEvent
-        public static void entitySpawnRestrictions(final SpawnPlacementRegisterEvent event) {
-            logger.info("Creating default SunProofZombie spawn placements");
-            event.register(SUN_PROOF_ZOMBIE, SpawnPlacements.Type.ON_GROUND,
-                    Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules,
-                    SpawnPlacementRegisterEvent.Operation.REPLACE);
-        }
-    }
+//    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+//    public static class ClientModEvents {
+//        @SubscribeEvent
+//        public static void onClientSetup(FMLClientSetupEvent event) {
+//            // Some client setup code
+//            logger.info("HELLO FROM CLIENT SETUP");
+//            logger.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+//        }
+//
+//        // Register zombie renderers
+//        @SubscribeEvent
+//        public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
+//            logger.info("Registering renderers");
+//            event.registerEntityRenderer(SUN_PROOF_ZOMBIE, ZombieRenderer::new);
+//        }
+//    }
+//
+//    // Increase player starvation rate
+//    @SubscribeEvent
+//    public void onPlayerPostTick(TickEvent.PlayerTickEvent event) {
+//        if (event.phase == TickEvent.Phase.END && event.side == LogicalSide.SERVER) {
+//            // Add exhaustion every tick
+//            event.player.getFoodData().addExhaustion(EXHAUSTION_PER_TICK);
+//        }
+//    }
+//
+//    // Change mob spawning characteristics
+//    // This only seems to be called for ModSpawnTypes NATURAL, SPAWNER, and CHUNK_GENERATION
+//    @SubscribeEvent
+//    public void onCheckEntityPlacement(MobSpawnEvent.SpawnPlacementCheck event) {
+//        if (event.getEntityType().getCategory() == MobCategory.MONSTER &&
+//                !event.getEntityType().equals(SUN_PROOF_ZOMBIE)) {
+//            event.setResult(Event.Result.DENY);
+//        }
+//
+//        // Reduce spawn rate of domestic animals (cows, sheep, pigs, chickens)
+//        EntityType<?> type = event.getEntityType();
+//        if (type.getCategory() == MobCategory.CREATURE) {
+//            if (type.equals(EntityType.COW) || type.equals(EntityType.PIG)
+//                    || type.equals(EntityType.CHICKEN) || type.equals(EntityType.SHEEP)) {
+//                double random = Math.random();
+//                if (random > DOMESTIC_ANIMAL_FRACTION) {
+//                    event.setResult(Event.Result.DENY);
+//                }
+//            }
+//        }
+//    }
+//
+//    // Stop village entity spawns
+//    @SubscribeEvent
+//    public void onFinalizeSpawn(MobSpawnEvent.FinalizeSpawn event) {
+//        // Villagers and Iron Golems are spawned by type STRUCTURE, which doesn't trigger a SpawnPlacementCheck
+//        if (event.getEntity().getType().equals(EntityType.VILLAGER) ||
+//                event.getEntity().getType().equals(EntityType.IRON_GOLEM)) {
+//            event.setSpawnCancelled(true);
+//        }
+//    }
+//
+//    // Disallow zombies spawning aid
+//    @SubscribeEvent
+//    public void onSummonAid(ZombieEvent.SummonAidEvent event) {
+//        event.setResult(Event.Result.DENY);
+//    }
+//
+//    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+//    public static class ModEvents {
+//
+//        // Register new zombie type
+//        @SubscribeEvent
+//        public static void setupEntities(RegisterEvent event) {
+//            if (event.getRegistryKey().equals(ForgeRegistries.Keys.ENTITY_TYPES)) {
+//                logger.info("Setting up mod entities");
+//                SUN_PROOF_ZOMBIE = build(event.getForgeRegistry(), "zombieplague:sunproofzombie",
+//                        EntityType.Builder.<Zombie>of(SunProofZombie::new, MobCategory.MONSTER)
+//                                .sized(0.6F, 1.95F)
+//                                .clientTrackingRange(8)
+//                );
+//            }
+//        }
+//
+//        private static <T extends Entity> EntityType<T> build(IForgeRegistry<EntityType> registry,
+//                                                              final String key,
+//                                                              final EntityType.Builder<T> builder) {
+//            EntityType<T> entity = builder.build(key);
+//            registry.register(new ResourceLocation(key), entity);
+//            return entity;
+//        }
+//
+//        // Create zombie attributes
+//        @SubscribeEvent
+//        public static void createEntityAttribute(final EntityAttributeCreationEvent event) {
+//            logger.info("Creating default SunProofZombie attributes");
+//            event.put(SUN_PROOF_ZOMBIE, SunProofZombie.createAttributes().build());
+//        }
+//
+//        // Create zombie spawn restrictions
+//        @SubscribeEvent
+//        public static void entitySpawnRestrictions(final SpawnPlacementRegisterEvent event) {
+//            logger.info("Creating default SunProofZombie spawn placements");
+//            event.register(SUN_PROOF_ZOMBIE, SpawnPlacements.Type.ON_GROUND,
+//                    Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules,
+//                    SpawnPlacementRegisterEvent.Operation.REPLACE);
+//        }
+//    }
 }
