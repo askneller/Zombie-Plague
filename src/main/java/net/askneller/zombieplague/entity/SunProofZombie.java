@@ -1,13 +1,9 @@
-package net.askneller.zombieplague;
+package net.askneller.zombieplague.entity;
 
-import com.mojang.logging.LogUtils;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.level.Level;
-import org.slf4j.Logger;
 
 public class SunProofZombie extends Zombie {
 

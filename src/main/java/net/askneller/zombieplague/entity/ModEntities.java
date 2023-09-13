@@ -1,7 +1,6 @@
 package net.askneller.zombieplague.entity;
 
 import com.mojang.logging.LogUtils;
-import net.askneller.zombieplague.SunProofZombie;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

@@ -1,4 +1,4 @@
-package net.askneller.zombieplague;
+package net.askneller.zombieplague.server;
 
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.event.TickEvent;
