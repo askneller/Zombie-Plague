@@ -31,6 +31,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.event.entity.living.MobSpawnEvent;
+import net.minecraftforge.event.entity.living.ZombieEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -245,8 +246,8 @@ public class ZombiePlague
             } else {
                 BlockPos pos = event.getPos();
                 BlockPos heightmapPos = event.getLevel().getHeightmapPos(Heightmap.Types.WORLD_SURFACE, pos);
-                LOGGER.info("Spawn check for {} at {}, ({}), height {}, surface {}", event.getEntityType(), pos,
-                        event.getSpawnType(), heightmapPos.getY(), pos.getY() >= heightmapPos.getY());
+//                LOGGER.info("Spawn check for {} at {}, ({}), height {}, surface {}", event.getEntityType(), pos,
+//                        event.getSpawnType(), heightmapPos.getY(), pos.getY() >= heightmapPos.getY());
             }
         }
 
@@ -301,6 +302,22 @@ public class ZombiePlague
 //            LOGGER.info("Finalize golem at {}, {}, {}, type: {}", event.getX(), event.getY(), event.getZ(), event.getSpawnType());
             event.setSpawnCancelled(true);
         }
+
+        if (event.getEntity().getType().equals(SUN_PROOF_ZOMBIE)) {
+//            LOGGER.info("\nFinalize sun Zombie at {}, {}, {}, type: {}",
+//                    event.getX(), event.getY(), event.getZ(), event.getSpawnType());
+
+            BlockPos pos = new BlockPos((int) event.getX(), (int) event.getY(), (int) event.getZ());
+            BlockPos heightmapPos = event.getLevel().getHeightmapPos(Heightmap.Types.WORLD_SURFACE, pos);
+                LOGGER.info("Spawn check for {} at {}, ({}), height {}, surface {}", SUN_PROOF_ZOMBIE, pos,
+                        event.getSpawnType(), heightmapPos.getY(), pos.getY() >= heightmapPos.getY());
+        }
+    }
+
+    @SubscribeEvent
+    public void onSummonAid(ZombieEvent.SummonAidEvent event) {
+//        LOGGER.info("Summoning aid at x {}, y {}, z {}", event.getX(), event.getY(), event.getZ());
+        event.setResult(Event.Result.DENY);
     }
 
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
