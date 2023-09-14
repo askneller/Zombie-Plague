@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.event.entity.living.ZombieEvent;
@@ -114,6 +115,21 @@ public class SpawnEvents {
             spawnedTotalMonsters++;
             spawnedMonsters.computeIfPresent(event.getEntity().getType(), ((entityType, integer) -> integer + 1));
             spawnedMonsters.computeIfAbsent(event.getEntity().getType(), (entityType -> 1));
+        }
+        */
+
+        /*
+        if (event.getEntity().getType().equals(EntityType.VILLAGER) && event.getSpawnType() == MobSpawnType.STRUCTURE) {
+            logger.info("Here");
+            StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+            System.out.println("\nTrace");
+            int len = 25;
+            if (stackTrace.length < 25)
+                len = stackTrace.length;
+            for (int i = 0; i < len; i++) {
+                System.out.println(stackTrace[i]);
+            }
+            System.out.println("\n");
         }
         */
 
