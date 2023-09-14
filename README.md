@@ -17,5 +17,3 @@ To be implemented:
 - New zombie behaviours (attracted to light and sound)
 - Settings (spawn rates etc.) adjustable via config files,
 - Reduced spawn rate of all creatures
-
-[//]: # (Villages have no inhabitants (villagers or golems)
