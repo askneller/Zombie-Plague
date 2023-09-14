@@ -10,8 +10,6 @@ A zombie survival mod for Minecraft
 - Domesticated animals (cows, sheep, pigs, and chickens) spawn at reduced rates,
 - Villages no longer spawn,
 
-[//]: # (Villages have no inhabitants (villagers or golems)
-
 To be implemented:
 - Crafting recipe/s for string,
 - Increase drop rate for flint from gravel,
@@ -19,3 +17,5 @@ To be implemented:
 - New zombie behaviours (attracted to light and sound)
 - Settings (spawn rates etc.) adjustable via config files,
 - Reduced spawn rate of all creatures
+
+[//]: # (Villages have no inhabitants (villagers or golems)
