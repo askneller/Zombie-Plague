@@ -9,11 +9,11 @@ A zombie survival mod for Minecraft
 - Player hunger deteriorates faster than the base game,
 - Domesticated animals (cows, sheep, pigs, and chickens) spawn at reduced rates,
 - Villages no longer spawn,
+- Slightly increased drop rate for flint from gravel,
+- New item: plant fibre, crafted from sticks, used to make string
 
 To be implemented:
-- Crafting recipe/s for string,
-- Increase drop rate for flint from gravel,
-- New items,
+- New items (flintlock pistol and musket),
 - New zombie behaviours (attracted to light and sound)
 - Settings (spawn rates etc.) adjustable via config files,
 - Reduced spawn rate of all creatures

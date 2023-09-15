@@ -3,6 +3,7 @@ package net.askneller.zombieplague;
 import com.mojang.logging.LogUtils;
 import net.askneller.zombieplague.entity.SpawnEvents;
 import net.askneller.zombieplague.server.ServerEvents;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -11,7 +12,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
 @Mod(ZombiePlague.MODID)
@@ -34,11 +37,17 @@ public class ZombiePlague {
     // The fraction of sheep, cow, pig, and chicken spawns to allow
     public static final double DOMESTIC_ANIMAL_FRACTION = 0.2;
 
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
+
+    public static final RegistryObject<Item> PLANT_FIBRE = ITEMS.register("plant_fibre", () -> new Item(new Item.Properties()));
+
     public ZombiePlague() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
+
+        ITEMS.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
