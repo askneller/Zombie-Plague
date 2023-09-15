@@ -3,6 +3,7 @@ package net.askneller.zombieplague;
 import com.mojang.logging.LogUtils;
 import net.askneller.zombieplague.entity.SpawnEvents;
 import net.askneller.zombieplague.server.ServerEvents;
+import net.askneller.zombieplague.world.item.BlunderbussItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
@@ -40,6 +41,8 @@ public class ZombiePlague {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
 
     public static final RegistryObject<Item> PLANT_FIBRE = ITEMS.register("plant_fibre", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> BLUNDERBUSS = ITEMS.register("blunderbuss",
+            () -> new BlunderbussItem(new Item.Properties().stacksTo(1).durability(465)));
 
     public ZombiePlague() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

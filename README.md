@@ -10,9 +10,12 @@ A zombie survival mod for Minecraft
 - Domesticated animals (cows, sheep, pigs, and chickens) spawn at reduced rates,
 - Villages no longer spawn,
 - Slightly increased drop rate for flint from gravel,
-- New item: plant fibre, crafted from sticks, used to make string
+- New item: plant fibre, crafted from sticks or bamboo, used to make string
+- New item: blunderbuss, firing arrows (for now)
 
 To be implemented:
+- New crafting recipes for: gunpowder
+- New mineral / ore block: nitre (smelts to saltpetre)
 - New items (flintlock pistol and musket),
 - New zombie behaviours (attracted to light and sound)
 - Settings (spawn rates etc.) adjustable via config files,
