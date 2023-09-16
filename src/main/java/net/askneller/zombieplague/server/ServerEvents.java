@@ -1,8 +1,10 @@
 package net.askneller.zombieplague.server;
 
 import com.mojang.logging.LogUtils;
+import net.askneller.zombieplague.entity.ModEntities;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -62,4 +64,12 @@ public class ServerEvents {
         }
     }
 
+    /*
+    @SubscribeEvent
+    public static void onEntityLeaveLevel(EntityLeaveLevelEvent event) {
+        if (event.getEntity().getType().equals(ModEntities.BLUNDERBUSS_SHOT)) {
+            logger.info("Leave {}", event.getEntity());
+        }
+    }
+    */
 }

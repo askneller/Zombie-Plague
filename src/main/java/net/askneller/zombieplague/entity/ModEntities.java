@@ -1,6 +1,7 @@
 package net.askneller.zombieplague.entity;
 
 import com.mojang.logging.LogUtils;
+import net.askneller.zombieplague.world.entity.projectile.BlunderbussShot;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -10,7 +11,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.level.BlockAndTintGetter;
@@ -32,6 +32,7 @@ public class ModEntities {
     private static final Logger logger = LogUtils.getLogger();
 
     public static EntityType<? extends Zombie> SUN_PROOF_ZOMBIE;
+    public static EntityType<BlunderbussShot> BLUNDERBUSS_SHOT;
 
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModEntityEvents {
@@ -45,6 +46,13 @@ public class ModEntities {
                         EntityType.Builder.<Zombie>of(SunProofZombie::new, MobCategory.CREATURE) // MobCategory.MONSTER)
                                 .sized(0.6F, 1.95F)
                                 .clientTrackingRange(8)
+                );
+
+                BLUNDERBUSS_SHOT = build(event.getForgeRegistry(), "zombieplague:blunderbussshot",
+                        EntityType.Builder.<BlunderbussShot>of(BlunderbussShot::new, MobCategory.MISC)
+                                .sized(0.5F, 0.5F)
+                                .clientTrackingRange(4)
+                                .updateInterval(20)
                 );
             }
         }

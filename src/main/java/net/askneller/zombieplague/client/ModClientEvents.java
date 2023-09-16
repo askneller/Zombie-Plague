@@ -1,6 +1,7 @@
 package net.askneller.zombieplague.client;
 
 import com.mojang.logging.LogUtils;
+import net.askneller.zombieplague.client.renderer.entity.BlunderbussShotRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.ZombieRenderer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -11,6 +12,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.slf4j.Logger;
 
 import static net.askneller.zombieplague.ZombiePlague.MODID;
+import static net.askneller.zombieplague.entity.ModEntities.BLUNDERBUSS_SHOT;
 import static net.askneller.zombieplague.entity.ModEntities.SUN_PROOF_ZOMBIE;
 
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -24,10 +26,10 @@ public class ModClientEvents {
         logger.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
     }
 
-    // Register zombie renderers
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
         logger.info("Registering renderers");
         event.registerEntityRenderer(SUN_PROOF_ZOMBIE, ZombieRenderer::new);
+        event.registerEntityRenderer(BLUNDERBUSS_SHOT, BlunderbussShotRenderer::new);
     }
 }
