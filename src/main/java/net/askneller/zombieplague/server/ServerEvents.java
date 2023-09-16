@@ -1,7 +1,9 @@
 package net.askneller.zombieplague.server;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
@@ -27,4 +29,37 @@ public class ServerEvents {
             event.player.getFoodData().addExhaustion(EXHAUSTION_PER_TICK);
         }
     }
+
+    @SubscribeEvent
+    public static void onUseItem(LivingEntityUseItemEvent.Start event) {
+        if (event.getEntity() instanceof Player) {
+            logger.info("LivingEntityUseItemEvent.Start: item {}, duration {}", event
+                    .getItem().getItem(), event.getDuration());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onUseItem(LivingEntityUseItemEvent.Tick event) {
+        if (event.getEntity() instanceof Player) {
+            logger.info("LivingEntityUseItemEvent.Tick: item {}, duration {}", event
+                    .getItem().getItem(), event.getDuration());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onUseItem(LivingEntityUseItemEvent.Stop event) {
+        if (event.getEntity() instanceof Player) {
+            logger.info("LivingEntityUseItemEvent.Stop: item {}, duration {}", event
+                    .getItem().getItem(), event.getDuration());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onUseItem(LivingEntityUseItemEvent.Finish event) {
+        if (event.getEntity() instanceof Player) {
+            logger.info("LivingEntityUseItemEvent.Finish: item {}, duration {}", event
+                    .getItem().getItem(), event.getDuration());
+        }
+    }
+
 }

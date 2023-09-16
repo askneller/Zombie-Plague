@@ -56,26 +56,142 @@ public class BlunderbussItem extends ProjectileWeaponItem implements Vanishable 
         logger.info("Use blunderbuss");
         ItemStack itemstack = player.getItemInHand(hand);
         if (isCharged(itemstack)) {
+            logger.info("Charged");
             performShooting(level, player, hand, itemstack, getShootingPower(itemstack), 1.0F);
-//            setCharged(itemstack, false);
+            setCharged(itemstack, false);
             return InteractionResultHolder.consume(itemstack);
         }
-//        else if (!p_40921_.getProjectile(itemstack).isEmpty()) {
-//            if (!isCharged(itemstack)) {
+        else if (!player.getProjectile(itemstack).isEmpty()) {
+            if (!isCharged(itemstack)) {
+                logger.info("Not charged");
 //                this.startSoundPlayed = false;
 //                this.midLoadSoundPlayed = false;
-//                p_40921_.startUsingItem(p_40922_);
-//            }
-//
-//            return InteractionResultHolder.consume(itemstack);
-//        } else {
-//            return InteractionResultHolder.fail(itemstack);
-//        }
-        return InteractionResultHolder.fail(itemstack);
+                player.startUsingItem(hand);
+            }
+
+            return InteractionResultHolder.consume(itemstack);
+        } else {
+            return InteractionResultHolder.fail(itemstack);
+        }
+//        return InteractionResultHolder.fail(itemstack);
     }
 
+    public int getUseDuration(ItemStack p_40938_) {
+        return getChargeDuration(p_40938_) + 3;
+    }
+
+    public static int getChargeDuration(ItemStack p_40940_) {
+//        int i = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.QUICK_CHARGE, p_40940_);
+        return 25; //i == 0 ? 25 : 25 - 5 * i;
+    }
+
+//    public static boolean isCharged(ItemStack p_40933_) {
+//        return true;
+//    }
+
     public static boolean isCharged(ItemStack p_40933_) {
+        CompoundTag compoundtag = p_40933_.getTag();
+        return compoundtag != null && compoundtag.getBoolean("Charged");
+    }
+
+    public static void setCharged(ItemStack p_40885_, boolean p_40886_) {
+        CompoundTag compoundtag = p_40885_.getOrCreateTag();
+        compoundtag.putBoolean("Charged", p_40886_);
+    }
+
+    public void releaseUsing(ItemStack p_40875_, Level p_40876_, LivingEntity p_40877_, int p_40878_) {
+        if (p_40877_ instanceof Player) {
+            logger.info("releaseUsing: {}, duration {}", p_40875_.getItem(), p_40878_);
+        }
+        int i = this.getUseDuration(p_40875_) - p_40878_;
+        float f = getPowerForTime(i, p_40875_);
+        if (p_40877_ instanceof Player) {
+            logger.info("power {}", f);
+        }
+        if (f >= 1.0F && !isCharged(p_40875_) && tryLoadProjectiles(p_40877_, p_40875_)) {
+            setCharged(p_40875_, true);
+            SoundSource soundsource = p_40877_ instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
+            p_40876_.playSound((Player)null, p_40877_.getX(), p_40877_.getY(), p_40877_.getZ(), SoundEvents.CROSSBOW_LOADING_END, soundsource, 1.0F, 1.0F / (p_40876_.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F);
+        }
+
+    }
+
+    private static boolean tryLoadProjectiles(LivingEntity p_40860_, ItemStack p_40861_) {
+        int i = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MULTISHOT, p_40861_);
+        int j = i == 0 ? 1 : 3;
+        boolean flag = p_40860_ instanceof Player && ((Player)p_40860_).getAbilities().instabuild;
+        ItemStack itemstack = p_40860_.getProjectile(p_40861_);
+        ItemStack itemstack1 = itemstack.copy();
+
+        for(int k = 0; k < j; ++k) {
+            if (k > 0) {
+                itemstack = itemstack1.copy();
+            }
+
+            if (itemstack.isEmpty() && flag) {
+                itemstack = new ItemStack(Items.ARROW);
+                itemstack1 = itemstack.copy();
+            }
+
+            if (!loadProjectile(p_40860_, p_40861_, itemstack, k > 0, flag)) {
+                return false;
+            }
+        }
+
         return true;
+    }
+
+    private static boolean loadProjectile(LivingEntity p_40863_, ItemStack p_40864_, ItemStack p_40865_, boolean p_40866_, boolean p_40867_) {
+        if (p_40865_.isEmpty()) {
+            return false;
+        } else {
+            boolean flag = p_40867_ && p_40865_.getItem() instanceof ArrowItem;
+            ItemStack itemstack;
+            if (!flag && !p_40867_ && !p_40866_) {
+                itemstack = p_40865_.split(1);
+                if (p_40865_.isEmpty() && p_40863_ instanceof Player) {
+                    ((Player)p_40863_).getInventory().removeItem(p_40865_);
+                }
+            } else {
+                itemstack = p_40865_.copy();
+            }
+
+            addChargedProjectile(p_40864_, itemstack);
+            return true;
+        }
+    }
+
+    private static void addChargedProjectile(ItemStack p_40929_, ItemStack p_40930_) {
+        CompoundTag compoundtag = p_40929_.getOrCreateTag();
+        ListTag listtag;
+        if (compoundtag.contains("ChargedProjectiles", 9)) {
+            listtag = compoundtag.getList("ChargedProjectiles", 10);
+        } else {
+            listtag = new ListTag();
+        }
+
+        CompoundTag compoundtag1 = new CompoundTag();
+        p_40930_.save(compoundtag1);
+        listtag.add(compoundtag1);
+        compoundtag.put("ChargedProjectiles", listtag);
+    }
+
+    private static float getPowerForTime(int p_40854_, ItemStack p_40855_) {
+        float f = (float)p_40854_ / (float)getChargeDuration(p_40855_);
+        if (f > 1.0F) {
+            f = 1.0F;
+        }
+
+        return f;
+    }
+
+    // I think this means that once the item has been "released" from using, it still can be "used", like a crossbow
+    // This returning true allows the use duration to go negative, so the Finish UseItemEvent is not called,
+    // Stop is instead when the player releases the mouse button
+    // TODO investigate why Finish is not called on this or crossbow, event only seems to be triggered from LivingEntity.completeUsingItem
+    // TODO which is called from LivingEntity.updateUsingItem. updateUsingItem checks !useOnRelease before calling completeUsingItem
+    public boolean useOnRelease(ItemStack p_150801_) {
+        return p_150801_.is(this);
     }
 
     public static void performShooting(Level level, LivingEntity entity, InteractionHand hand,

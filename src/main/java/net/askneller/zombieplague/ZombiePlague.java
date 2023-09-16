@@ -43,6 +43,8 @@ public class ZombiePlague {
     public static final RegistryObject<Item> PLANT_FIBRE = ITEMS.register("plant_fibre", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> BLUNDERBUSS = ITEMS.register("blunderbuss",
             () -> new BlunderbussItem(new Item.Properties().stacksTo(1).durability(465)));
+    public static final RegistryObject<Item> MUSKET_BALL = ITEMS.register("musket_ball", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> BLUNDERBUSS_SHOT = ITEMS.register("blunderbuss_shot", () -> new Item(new Item.Properties()));
 
     public ZombiePlague() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

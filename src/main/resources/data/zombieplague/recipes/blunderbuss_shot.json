@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "item": "zombieplague:musket_ball"
+    },
+    {
+      "item": "zombieplague:musket_ball"
+    },
+    {
+      "item": "zombieplague:musket_ball"
+    },
+    {
+      "item": "zombieplague:musket_ball"
+    },
+    {
+      "item": "zombieplague:musket_ball"
+    }
+  ],
+  "result": {
+    "item": "zombieplague:blunderbuss_shot"
+  }
+}
