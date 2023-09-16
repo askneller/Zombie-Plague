@@ -11,7 +11,12 @@ A zombie survival mod for Minecraft
 - Villages no longer spawn,
 - Slightly increased drop rate for flint from gravel,
 - New item: plant fibre, crafted from sticks or bamboo, used to make string
-- New item: blunderbuss, firing arrows (for now)
+- New item: blunderbuss
+- - Todo:
+- - Fix sound (currently arrow)
+- - Implement loading animation
+- - Implement loaded image / graphic
+- - Add smoke particle effect 
 
 To be implemented:
 - New crafting recipes for: gunpowder
