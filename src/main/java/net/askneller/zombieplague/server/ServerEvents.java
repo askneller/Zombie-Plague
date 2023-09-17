@@ -34,17 +34,17 @@ public class ServerEvents {
 
     @SubscribeEvent
     public static void onUseItem(LivingEntityUseItemEvent.Start event) {
-        if (event.getEntity() instanceof Player) {
-            logger.info("LivingEntityUseItemEvent.Start: item {}, duration {}", event
-                    .getItem().getItem(), event.getDuration());
-        }
+//        if (event.getEntity() instanceof Player) {
+//            logger.info("LivingEntityUseItemEvent.Start: item {}, duration {}", event
+//                    .getItem().getItem(), event.getDuration());
+//        }
     }
 
     @SubscribeEvent
     public static void onUseItem(LivingEntityUseItemEvent.Tick event) {
         if (event.getEntity() instanceof Player) {
-            logger.info("LivingEntityUseItemEvent.Tick: item {}, duration {}", event
-                    .getItem().getItem(), event.getDuration());
+//            logger.info("LivingEntityUseItemEvent.Tick: item {}, duration {}", event
+//                    .getItem().getItem(), event.getDuration());
             // TODO change to graphic-based notification like crossbow
             Item item = event.getItem().getItem();
             if (item instanceof BlunderbussItem && event.getDuration() <= 0) {
@@ -55,18 +55,18 @@ public class ServerEvents {
 
     @SubscribeEvent
     public static void onUseItem(LivingEntityUseItemEvent.Stop event) {
-        if (event.getEntity() instanceof Player) {
-            logger.info("LivingEntityUseItemEvent.Stop: item {}, duration {}", event
-                    .getItem().getItem(), event.getDuration());
-        }
+//        if (event.getEntity() instanceof Player) {
+//            logger.info("LivingEntityUseItemEvent.Stop: item {}, duration {}", event
+//                    .getItem().getItem(), event.getDuration());
+//        }
     }
 
     @SubscribeEvent
     public static void onUseItem(LivingEntityUseItemEvent.Finish event) {
-        if (event.getEntity() instanceof Player) {
-            logger.info("LivingEntityUseItemEvent.Finish: item {}, duration {}", event
-                    .getItem().getItem(), event.getDuration());
-        }
+//        if (event.getEntity() instanceof Player) {
+//            logger.info("LivingEntityUseItemEvent.Finish: item {}, duration {}", event
+//                    .getItem().getItem(), event.getDuration());
+//        }
     }
 
     /*
