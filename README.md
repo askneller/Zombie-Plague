@@ -15,7 +15,7 @@ A zombie survival mod for Minecraft
 - - Todo:
 - - Fix sound (currently arrow)
 - - Implement loading animation
-- - Implement loaded image / graphic
+- - Implement loaded image / graphic (currently sends system messages)
 - - Add smoke particle effect 
 
 To be implemented:
