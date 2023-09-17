@@ -48,7 +48,7 @@ public class ModEntities {
                                 .clientTrackingRange(8)
                 );
 
-                BLUNDERBUSS_SHOT = build(event.getForgeRegistry(), "zombieplague:blunderbussshot",
+                BLUNDERBUSS_SHOT = build(event.getForgeRegistry(), "zombieplague:blunderbuss_shot",
                         EntityType.Builder.<BlunderbussShot>of(BlunderbussShot::new, MobCategory.MISC)
                                 .sized(0.5F, 0.5F)
                                 .clientTrackingRange(4)

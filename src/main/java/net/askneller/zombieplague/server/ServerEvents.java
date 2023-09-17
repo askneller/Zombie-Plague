@@ -1,10 +1,10 @@
 package net.askneller.zombieplague.server;
 
 import com.mojang.logging.LogUtils;
-import net.askneller.zombieplague.entity.ModEntities;
+import net.askneller.zombieplague.world.item.BlunderbussItem;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -45,6 +45,11 @@ public class ServerEvents {
         if (event.getEntity() instanceof Player) {
             logger.info("LivingEntityUseItemEvent.Tick: item {}, duration {}", event
                     .getItem().getItem(), event.getDuration());
+            // TODO change to graphic-based notification like crossbow
+            Item item = event.getItem().getItem();
+            if (item instanceof BlunderbussItem && event.getDuration() <= 0) {
+                ((BlunderbussItem) item).notifyLoaded((Player) event.getEntity());
+            }
         }
     }
 

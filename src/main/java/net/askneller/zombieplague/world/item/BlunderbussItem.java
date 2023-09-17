@@ -2,24 +2,23 @@ package net.askneller.zombieplague.world.item;
 
 import com.google.common.collect.Lists;
 import com.mojang.logging.LogUtils;
-import net.askneller.zombieplague.ZombiePlague;
 import net.askneller.zombieplague.entity.ModEntities;
 import net.askneller.zombieplague.world.entity.projectile.BlunderbussShot;
+import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.CrossbowAttackMob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
@@ -60,6 +59,12 @@ public class BlunderbussItem extends ProjectileWeaponItem implements Vanishable 
         return DEFAULT_RANGE;
     }
 
+    public void notifyLoaded(Player player) {
+        if (player.level().isClientSide)
+            player.sendSystemMessage(Component.literal("Loaded!")
+                    .withStyle(ChatFormatting.RED));
+    }
+
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide) logger.info("Use blunderbuss");
@@ -76,6 +81,10 @@ public class BlunderbussItem extends ProjectileWeaponItem implements Vanishable 
 //                this.startSoundPlayed = false;
 //                this.midLoadSoundPlayed = false;
                 player.startUsingItem(hand);
+                // TODO change to graphic-based notification like crossbow
+                if (level.isClientSide())
+                    player.sendSystemMessage(Component.literal("Loading blunderbuss")
+                            .withStyle(ChatFormatting.AQUA));
             }
 
             return InteractionResultHolder.consume(itemstack);
@@ -108,19 +117,19 @@ public class BlunderbussItem extends ProjectileWeaponItem implements Vanishable 
         compoundtag.putBoolean("Charged", p_40886_);
     }
 
-    public void releaseUsing(ItemStack p_40875_, Level level, LivingEntity p_40877_, int p_40878_) {
-        if (p_40877_ instanceof Player) {
+    public void releaseUsing(ItemStack p_40875_, Level level, LivingEntity livingEntity, int p_40878_) {
+        if (livingEntity instanceof Player) {
             if (!level.isClientSide) logger.info("releaseUsing: {}, duration {}", p_40875_.getItem(), p_40878_);
         }
         int i = this.getUseDuration(p_40875_) - p_40878_;
         float f = getPowerForTime(i, p_40875_);
-        if (p_40877_ instanceof Player) {
+        if (livingEntity instanceof Player) {
             if (!level.isClientSide) logger.info("power {}", f);
         }
-        if (f >= 1.0F && !isCharged(p_40875_) && tryLoadProjectiles(p_40877_, p_40875_)) {
+        if (f >= 1.0F && !isCharged(p_40875_) && tryLoadProjectiles(livingEntity, p_40875_)) {
             setCharged(p_40875_, true);
-            SoundSource soundsource = p_40877_ instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
-            level.playSound((Player)null, p_40877_.getX(), p_40877_.getY(), p_40877_.getZ(), SoundEvents.CROSSBOW_LOADING_END, soundsource, 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F);
+            SoundSource soundsource = livingEntity instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
+            level.playSound((Player)null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.CROSSBOW_LOADING_END, soundsource, 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F);
         }
 
     }
