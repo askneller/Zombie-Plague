@@ -52,16 +52,16 @@ public class BlunderbussShot extends Projectile {
         // All projectile movement logic seems to be in subclasses of Projectile
         super.tick();
         // Below from ThrowableProjectile
-        if (!this.level().isClientSide) logger.info("Tick! at {} {} {}", getBlockX(), getBlockY(), getBlockZ());
+//        if (!this.level().isClientSide) logger.info("Tick! at {} {} {}", getBlockX(), getBlockY(), getBlockZ());
 
         HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
 //        logger.info("Hit result {}", hitresult);
         boolean flag = false;
         if (hitresult.getType() == HitResult.Type.BLOCK) {
-            if (!this.level().isClientSide) logger.info("Hit block");
+//            if (!this.level().isClientSide) logger.info("Hit block");
             BlockPos blockpos = ((BlockHitResult)hitresult).getBlockPos();
             BlockState blockstate = this.level().getBlockState(blockpos);
-            if (!this.level().isClientSide) logger.info("Block pos {}, state {}", blockpos, blockstate);
+//            if (!this.level().isClientSide) logger.info("Block pos {}, state {}", blockpos, blockstate);
             if (blockstate.is(Blocks.NETHER_PORTAL)) {
                 this.handleInsidePortal(blockpos);
                 flag = true;
@@ -76,7 +76,7 @@ public class BlunderbussShot extends Projectile {
         }
 
         if (hitresult.getType() != HitResult.Type.MISS && !flag && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {
-            if (!this.level().isClientSide) logger.info("Call onHit");
+//            if (!this.level().isClientSide) logger.info("Call onHit");
             this.onHit(hitresult);
         }
 
@@ -97,7 +97,7 @@ public class BlunderbussShot extends Projectile {
         } else {
             f = 0.99F;
         }
-        if (!this.level().isClientSide) logger.info("f {}", f);
+//        if (!this.level().isClientSide) logger.info("f {}", f);
 
         this.setDeltaMovement(vec3.scale((double)f));
         if (!this.isNoGravity()) {
@@ -105,7 +105,7 @@ public class BlunderbussShot extends Projectile {
             this.setDeltaMovement(vec31.x, vec31.y - (double)this.getGravity(), vec31.z);
         }
 
-        if (!this.level().isClientSide) logger.info("Delta move {}", this.getDeltaMovement());
+//        if (!this.level().isClientSide) logger.info("Delta move {}", this.getDeltaMovement());
         this.setPos(d2, d0, d1);
     }
 
@@ -113,7 +113,7 @@ public class BlunderbussShot extends Projectile {
         super.onHit(p_37406_);
         if (!this.level().isClientSide) {
             this.level().broadcastEntityEvent(this, (byte)3);
-            logger.info("Discarding");
+//            logger.info("Discarding");
             this.discard();
         }
     }
@@ -122,16 +122,16 @@ public class BlunderbussShot extends Projectile {
         super.onHitEntity(p_37404_);
         Entity entity = p_37404_.getEntity();
         int i = 25; //entity instanceof Blaze ? 3 : 0;
-        if (entity instanceof LivingEntity) {
-            LivingEntity living = (LivingEntity) entity;
-            logger.info("Hurting for {}, health {}", i, living.getHealth());
-        }
+//        if (entity instanceof LivingEntity) {
+//            LivingEntity living = (LivingEntity) entity;
+//            logger.info("Hurting for {}, health {}", i, living.getHealth());
+//        }
 
         entity.hurt(this.damageSources().thrown(this, this.getOwner()), (float)i);
-        if (entity instanceof LivingEntity) {
-            LivingEntity living = (LivingEntity) entity;
-            logger.info("Hurt for {}, health {}", i, living.getHealth());
-        }
+//        if (entity instanceof LivingEntity) {
+//            LivingEntity living = (LivingEntity) entity;
+//            logger.info("Hurt for {}, health {}", i, living.getHealth());
+//        }
     }
 
     protected float getGravity() {
