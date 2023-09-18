@@ -2,7 +2,7 @@
 
 A zombie survival mod for Minecraft
 
-### Features:
+## Features:
 - Zombies:
   - only monsters that now spawn, will spawn on the surface, 
   - no longer catch fire in the sun, no longer summon aid,
@@ -15,7 +15,7 @@ A zombie survival mod for Minecraft
 - New item: blunderbuss
 - New Items: musket balls and blunderbuss shot, made from iron nuggets
 
-To be implemented:
+### To be implemented:
 - Blunderbuss todo:
   - Sound (currently arrow)
   - Implement loading animation
