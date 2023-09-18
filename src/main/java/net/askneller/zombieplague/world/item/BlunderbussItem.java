@@ -300,63 +300,34 @@ public class BlunderbussItem extends ProjectileWeaponItem implements Vanishable 
         }
         BlockPos pos = new BlockPos((int) livingEntity.getX(), (int) livingEntity.getY(), (int) livingEntity.getZ());
 
-        makeParticles(level, pos, true, true, livingEntity.getLookAngle(), livingEntity.blockPosition());
+        makeParticles(level, pos, true, true, livingEntity.getLookAngle(), livingEntity.blockPosition(), livingEntity.position());
     }
 
     // From CampfireBlockEntity
-    public static void makeParticles(Level p_51252_, BlockPos pos, boolean p_51254_, boolean p_51255_, Vec3 look, BlockPos blockPos) {
+    public static void makeParticles(Level p_51252_, BlockPos pos, boolean p_51254_, boolean p_51255_, Vec3 look, BlockPos blockPos, Vec3 position) {
         RandomSource randomsource = p_51252_.getRandom();
-        SimpleParticleType simpleparticletype = /*p_51254_ ?*/ ParticleTypes.CAMPFIRE_SIGNAL_SMOKE /*: ParticleTypes.CAMPFIRE_COSY_SMOKE*/;
-        logger.info("Add particles");
+//        SimpleParticleType simpleparticletype = /*p_51254_ ?*/ ParticleTypes.CAMPFIRE_SIGNAL_SMOKE /*: ParticleTypes.CAMPFIRE_COSY_SMOKE*/;
+        logger.info("Add particles at position {} (block {})", position, blockPos);
+//        logger.info("LE xyz {}", pos);
 
-//        p_51252_.addAlwaysVisibleParticle(simpleparticletype, true,
-//                (double)pos.getX() + 0.5D /*+ randomsource.nextDouble() / 3.0D * (double)(randomsource.nextBoolean() ? 1 : -1)*/,
-//                (double)pos.getY() /*+ randomsource.nextDouble() + randomsource.nextDouble()*/,
-//                (double)pos.getZ() + 0.5D /*+ randomsource.nextDouble() / 3.0D * (double)(randomsource.nextBoolean() ? 1 : -1)*/,
-//                0.0D,
-//                0.07D,
-//                0.07);
-
-//        if (p_51255_) {
-//            p_51252_.addParticle(ParticleTypes.SMOKE,
-//                    (double)p_51253_.getX() + 0.5D + randomsource.nextDouble() / 4.0D * (double)(randomsource.nextBoolean() ? 1 : -1),
-//                    (double)p_51253_.getY() + 0.4D,
-//                    (double)p_51253_.getZ() + 0.5D + randomsource.nextDouble() / 4.0D * (double)(randomsource.nextBoolean() ? 1 : -1),
-//                    0.0D,
-//                    0.005D,
-//                    0.0D);
-        logger.info("Looking look {} from {}", look, blockPos);
+        logger.info("Looking look {}", look);
         double x, y, z;
-        x = (double)pos.getX() + look.x;
-        y = (double)pos.getY();
-        z = (double)pos.getZ() + look.z;
-        logger.info("Add at {}, {}, {}", x, y, z);
+//        double yOffset = look.y >= 0.0 ? Math.max(look.y, 0.25) : Math.max(look.y, -0.25);
+//        logger.info("yOffset {}", yOffset);
+        x = position.x() + look.x;
+        y = position.y() + 1.5 + look.y;
+        z = position.z() + look.z;
+        logger.info("Add particle at {}, {}, {}", x, y, z);
+        Vec3 scaled = look.scale(0.2);
         p_51252_.addParticle(ParticleTypes.SMOKE, true,
                 // position
                 x /*+ randomsource.nextDouble() / 3.0D * (double)(randomsource.nextBoolean() ? 1 : -1)*/,
                 y /*+ randomsource.nextDouble() + randomsource.nextDouble()*/,
                 z /*+ randomsource.nextDouble() / 3.0D * (double)(randomsource.nextBoolean() ? 1 : -1)*/,
                 // impulse
-                0.0,
-                0.07,
-                0.0);
-//        p_51252_.addParticle(ParticleTypes.SMOKE, true,
-//                // position
-//                (double)pos.getX() + 0.4D /*+ randomsource.nextDouble() / 3.0D * (double)(randomsource.nextBoolean() ? 1 : -1)*/,
-//                (double)pos.getY() + 1.5 /*+ randomsource.nextDouble() + randomsource.nextDouble()*/,
-//                (double)pos.getZ() + 0.5D /*+ randomsource.nextDouble() / 3.0D * (double)(randomsource.nextBoolean() ? 1 : -1)*/,
-//                // impulse
-//                0.0,
-//                0.0,
-//                0.07);
-//        p_51252_.addParticle(ParticleTypes.SMOKE, true,
-//                (double)pos.getX() + 0.6D /*+ randomsource.nextDouble() / 3.0D * (double)(randomsource.nextBoolean() ? 1 : -1)*/,
-//                (double)pos.getY() + 1.5 /*+ randomsource.nextDouble() + randomsource.nextDouble()*/,
-//                (double)pos.getZ() + 0.5D /*+ randomsource.nextDouble() / 3.0D * (double)(randomsource.nextBoolean() ? 1 : -1)*/,
-//                0.0,
-//                0.0,
-//                0.07);
-//        }
+                scaled.x + 0.0,
+                scaled.y + 0.05,
+                scaled.z + 0.0);
 
     }
 
