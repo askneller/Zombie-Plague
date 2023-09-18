@@ -45,6 +45,13 @@ public class BlunderbussItem extends ProjectileWeaponItem implements Vanishable 
     public static final Predicate<ItemStack> SHOT = (p_43017_) -> {
         return p_43017_.is(BLUNDERBUSS_SHOT.get());
     };
+
+    // Particle constants
+    private static final int NUM_PARTICLES = 40;
+    private static final double Y_OFFSET = 1.5;
+    private static final double LOOK_SCALE_FACTOR = 0.2;
+    private static final float START_OFFSET_SCALE_FACTOR = 0.4f;
+
     public static final int DEFAULT_RANGE = 15; // Used for Mob attacks
 
     public BlunderbussItem(Properties p_43009_) {
@@ -298,37 +305,37 @@ public class BlunderbussItem extends ProjectileWeaponItem implements Vanishable 
             level.addFreshEntity(projectile);
             level.playSound((Player)null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, p_40900_);
         }
-        BlockPos pos = new BlockPos((int) livingEntity.getX(), (int) livingEntity.getY(), (int) livingEntity.getZ());
 
-        makeParticles(level, pos, true, true, livingEntity.getLookAngle(), livingEntity.blockPosition(), livingEntity.position());
+        makeParticles(level, livingEntity.getLookAngle(), livingEntity.position());
     }
 
     // From CampfireBlockEntity
-    public static void makeParticles(Level p_51252_, BlockPos pos, boolean p_51254_, boolean p_51255_, Vec3 look, BlockPos blockPos, Vec3 position) {
-        RandomSource randomsource = p_51252_.getRandom();
-//        SimpleParticleType simpleparticletype = /*p_51254_ ?*/ ParticleTypes.CAMPFIRE_SIGNAL_SMOKE /*: ParticleTypes.CAMPFIRE_COSY_SMOKE*/;
-        logger.info("Add particles at position {} (block {})", position, blockPos);
-//        logger.info("LE xyz {}", pos);
-
-        logger.info("Looking look {}", look);
-        double x, y, z;
-//        double yOffset = look.y >= 0.0 ? Math.max(look.y, 0.25) : Math.max(look.y, -0.25);
-//        logger.info("yOffset {}", yOffset);
-        x = position.x() + look.x;
-        y = position.y() + 1.5 + look.y;
-        z = position.z() + look.z;
-        logger.info("Add particle at {}, {}, {}", x, y, z);
-        Vec3 scaled = look.scale(0.2);
-        p_51252_.addParticle(ParticleTypes.SMOKE, true,
-                // position
-                x /*+ randomsource.nextDouble() / 3.0D * (double)(randomsource.nextBoolean() ? 1 : -1)*/,
-                y /*+ randomsource.nextDouble() + randomsource.nextDouble()*/,
-                z /*+ randomsource.nextDouble() / 3.0D * (double)(randomsource.nextBoolean() ? 1 : -1)*/,
-                // impulse
-                scaled.x + 0.0,
-                scaled.y + 0.05,
-                scaled.z + 0.0);
-
+    public static void makeParticles(Level level, Vec3 look, Vec3 position) {
+        RandomSource randomsource = level.getRandom();
+//        logger.info("Add particles at position {}", position);
+//        logger.info("Looking look {}", look);
+        Vec3 baseStartPos = new Vec3(
+                position.x() + look.x,
+                position.y() + Y_OFFSET + look.y,
+                position.z() + look.z);
+//        logger.info("baseStartPos {}", baseStartPos);
+        Vec3 scaledLook = look.scale(LOOK_SCALE_FACTOR);
+        for (int i = 0; i < NUM_PARTICLES; i++) {
+            double rx = randomsource.nextDouble() * 2.0 - 1.0;
+            double ry = randomsource.nextDouble() * 2.0 - 1.0;
+            double rz = randomsource.nextDouble() * 2.0 - 1.0;
+//            logger.info("\n{}\n{}\n{}", rx, ry, rz);
+            Vec3 offsetStart = baseStartPos.offsetRandom(randomsource, START_OFFSET_SCALE_FACTOR);
+            level.addParticle(ParticleTypes.LARGE_SMOKE, false,
+                    // position
+                    offsetStart.x,
+                    offsetStart.y,
+                    offsetStart.z,
+                    // impulse
+                    scaledLook.x + rx * 0.1,
+                    scaledLook.y + ry * 0.1,
+                    scaledLook.z + rz * 0.1);
+        }
     }
 
     private static Projectile getArrow(Level p_40915_, LivingEntity p_40916_, ItemStack p_40917_, ItemStack p_40918_) {
