@@ -3,19 +3,10 @@
   "category": "equipment",
   "ingredients": [
     {
-      "item": "zombieplague:musket_ball"
+      "item": "minecraft:iron_nugget"
     },
     {
-      "item": "zombieplague:musket_ball"
-    },
-    {
-      "item": "zombieplague:musket_ball"
-    },
-    {
-      "item": "zombieplague:musket_ball"
-    },
-    {
-      "item": "zombieplague:musket_ball"
+      "item": "minecraft:iron_nugget"
     }
   ],
   "result": {

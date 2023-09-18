@@ -13,6 +13,7 @@ A zombie survival mod for Minecraft
 - Slightly increased drop rate for flint from gravel,
 - New item: plant fibre, crafted from sticks or bamboo, used to make string
 - New item: blunderbuss
+- New Items: musket balls and blunderbuss shot, made from iron nuggets
 
 To be implemented:
 - Blunderbuss todo:
