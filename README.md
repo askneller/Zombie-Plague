@@ -6,7 +6,7 @@ A zombie survival mod for Minecraft
 - Zombies:
   - only monsters that now spawn, will spawn on the surface, 
   - no longer catch fire in the sun, no longer summon aid,
-  - will attack animals with low priority
+  - will attack animals (with low priority)
 - Player hunger deteriorates faster than the base game,
 - Domesticated animals (cows, sheep, pigs, and chickens) spawn at reduced rates,
 - Villages no longer spawn,
@@ -14,14 +14,18 @@ A zombie survival mod for Minecraft
 - New item: plant fibre, crafted from sticks or bamboo, used to make string
 - New item: blunderbuss
 - New Items: musket balls and blunderbuss shot, made from iron nuggets
+- New block: nitre
+- New items: raw nitre and saltpetre (smelted from raw nitre)
+- New recipe: gunpowder, from charcoal and saltpetre
 
 ### To be implemented:
 - Blunderbuss todo:
   - Sound (currently arrow)
   - Implement loading animation
   - Implement loaded image / graphic (currently sends system messages)
-- New crafting recipes for: gunpowder
-- New mineral / ore block: nitre (smelts to saltpetre)
+- Nitre todo:
+  - Add ore generation  
+- New mineral / ore block: sulfur (used for gunpowder)
 - New items (flintlock pistol and musket),
 - New zombie behaviours (attracted to light and sound)
 - Settings (spawn rates etc.) adjustable via config files,

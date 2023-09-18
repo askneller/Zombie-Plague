@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 150,
+  "experience": 0.7,
+  "group": "saltpetre",
+  "ingredient": {
+    "item": "zombieplague:raw_nitre"
+  },
+  "result": "zombieplague:saltpetre"
+}

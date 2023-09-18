@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "zombieplague:nitre"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "zombieplague:raw_nitre"
+  }
+}

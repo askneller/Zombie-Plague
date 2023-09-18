@@ -1,9 +1,14 @@
 {
+  "block.zombieplague.nitre": "Nitre",
+
   "entity.zombieplague.blunderbuss_shot": "Blunderbuss Shot",
   "entity.zombieplague.sunproofzombie": "Zombie",
 
   "item.zombieplague.blunderbuss": "Blunderbuss",
   "item.zombieplague.blunderbuss_shot": "Blunderbuss Shot",
   "item.zombieplague.musket_ball": "Musket Ball",
-  "item.zombieplague.plant_fibre": "Plant Fibre"
+  "item.zombieplague.nitre": "Nitre",
+  "item.zombieplague.plant_fibre": "Plant Fibre",
+  "item.zombieplague.raw_nitre": "Raw Nitre",
+  "item.zombieplague.saltpetre": "Saltpetre"
 }
