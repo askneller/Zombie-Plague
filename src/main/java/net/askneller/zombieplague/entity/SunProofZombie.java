@@ -2,9 +2,10 @@ package net.askneller.zombieplague.entity;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -18,6 +19,11 @@ public class SunProofZombie extends Zombie {
 
     public SunProofZombie(EntityType<? extends Zombie> p_34271_, Level p_34272_) {
         super(p_34271_, p_34272_);
+    }
+
+    protected void addBehaviourGoals() {
+        super.addBehaviourGoals();
+        this.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(this, Animal.class, true));
     }
 
     @Override
