@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    },
+    "X": {
+      "item": "minecraft:iron_ingot"
+    },
+    "$": {
+      "item": "minecraft:flint_and_steel"
+    }
+  },
+  "pattern": [
+    " XX",
+    " #X",
+    "##$"
+  ],
+  "result": {
+    "item": "zombieplague:blunderbuss"
+  },
+  "show_notification": true
+}
