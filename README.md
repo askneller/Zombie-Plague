@@ -12,7 +12,7 @@ A zombie survival mod for Minecraft
 - Villages no longer spawn,
 - Slightly increased drop rate for flint from gravel,
 - New item: plant fibre, crafted from sticks or bamboo, used to make string
-- New item: blunderbuss
+- New items: blunderbuss and musket
 - New Items: musket balls and blunderbuss shot, made from iron nuggets
 - New block: nitre, generates above y = 64
 - New items: raw nitre and saltpetre (smelted from raw nitre)
@@ -24,7 +24,7 @@ A zombie survival mod for Minecraft
   - Implement loading animation
   - Implement loaded image / graphic (currently sends system messages)
 - New mineral / ore block: sulfur (used for gunpowder)
-- New items (flintlock pistol and musket),
+- New items (flintlock pistol),
 - New zombie behaviours (attracted to light and sound)
 - Settings (spawn rates etc.) adjustable via config files,
 - Reduced spawn rate of all creatures

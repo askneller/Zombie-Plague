@@ -2,6 +2,7 @@ package net.askneller.zombieplague.entity;
 
 import com.mojang.logging.LogUtils;
 import net.askneller.zombieplague.world.entity.projectile.BlunderbussShot;
+import net.askneller.zombieplague.world.entity.projectile.MusketBall;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -33,6 +34,7 @@ public class ModEntities {
 
     public static EntityType<? extends Zombie> SUN_PROOF_ZOMBIE;
     public static EntityType<BlunderbussShot> BLUNDERBUSS_SHOT;
+    public static EntityType<MusketBall> MUSKET_BALL;
 
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModEntityEvents {
@@ -50,6 +52,13 @@ public class ModEntities {
 
                 BLUNDERBUSS_SHOT = build(event.getForgeRegistry(), "zombieplague:blunderbuss_shot",
                         EntityType.Builder.<BlunderbussShot>of(BlunderbussShot::new, MobCategory.MISC)
+                                .sized(0.5F, 0.5F)
+                                .clientTrackingRange(4)
+                                .updateInterval(20)
+                );
+
+                MUSKET_BALL = build(event.getForgeRegistry(), "zombieplague:musket_ball",
+                        EntityType.Builder.<MusketBall>of(MusketBall::new, MobCategory.MISC)
                                 .sized(0.5F, 0.5F)
                                 .clientTrackingRange(4)
                                 .updateInterval(20)

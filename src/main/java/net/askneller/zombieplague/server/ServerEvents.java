@@ -2,6 +2,7 @@ package net.askneller.zombieplague.server;
 
 import com.mojang.logging.LogUtils;
 import net.askneller.zombieplague.world.item.BlunderbussItem;
+import net.askneller.zombieplague.world.item.MusketItem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.event.TickEvent;
@@ -49,6 +50,8 @@ public class ServerEvents {
             Item item = event.getItem().getItem();
             if (item instanceof BlunderbussItem && event.getDuration() <= 0) {
                 ((BlunderbussItem) item).notifyLoaded((Player) event.getEntity());
+            } else if (item instanceof MusketItem && event.getDuration() <= 0) {
+                ((MusketItem) item).notifyLoaded((Player) event.getEntity());
             }
         }
     }

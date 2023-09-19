@@ -5,6 +5,7 @@ import net.askneller.zombieplague.entity.SpawnEvents;
 import net.askneller.zombieplague.server.ServerEvents;
 import net.askneller.zombieplague.sound.ModSounds;
 import net.askneller.zombieplague.world.item.BlunderbussItem;
+import net.askneller.zombieplague.world.item.MusketItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -50,8 +51,10 @@ public class ZombiePlague {
     public static final RegistryObject<Item> PLANT_FIBRE = ITEMS.register("plant_fibre", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> BLUNDERBUSS = ITEMS.register("blunderbuss",
             () -> new BlunderbussItem(new Item.Properties().stacksTo(1).durability(465)));
-    public static final RegistryObject<Item> MUSKET_BALL = ITEMS.register("musket_ball", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> BLUNDERBUSS_SHOT = ITEMS.register("blunderbuss_shot", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> MUSKET = ITEMS.register("musket",
+            () -> new MusketItem(new Item.Properties().stacksTo(1).durability(465)));
+    public static final RegistryObject<Item> MUSKET_BALL = ITEMS.register("musket_ball", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> RAW_NITRE = ITEMS.register("raw_nitre", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> SALTPETRE = ITEMS.register("saltpetre", () -> new Item(new Item.Properties()));
 
