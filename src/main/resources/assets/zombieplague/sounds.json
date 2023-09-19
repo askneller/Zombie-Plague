@@ -1,0 +1,8 @@
+{
+  "blunderbuss_shoot": {
+    "subtitle": "sounds.zombieplague.blunderbuss_shoot",
+    "sounds": [
+      "zombieplague:blunderbuss_shoot"
+    ]
+  }
+}

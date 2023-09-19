@@ -3,6 +3,7 @@ package net.askneller.zombieplague.world.item;
 import com.google.common.collect.Lists;
 import com.mojang.logging.LogUtils;
 import net.askneller.zombieplague.entity.ModEntities;
+import net.askneller.zombieplague.sound.ModSounds;
 import net.askneller.zombieplague.world.entity.projectile.BlunderbussShot;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -303,7 +304,16 @@ public class BlunderbussItem extends ProjectileWeaponItem implements Vanishable 
             });
 //            logger.info("Launched from {}, player {} {} {}", projectile.blockPosition(), livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
             level.addFreshEntity(projectile);
-            level.playSound((Player)null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, p_40900_);
+//            level.playSound((Player)null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, p_40900_);
+            level.playSound(
+                    (Player)null,
+                    livingEntity.getX(),
+                    livingEntity.getY(),
+                    livingEntity.getZ(),
+                    ModSounds.BLUNDERBUSS_SHOOT.get(),
+                    SoundSource.PLAYERS,
+                    1.0F,
+                    p_40900_);
         }
 
         makeParticles(level, livingEntity.getLookAngle(), livingEntity.position());

@@ -20,7 +20,7 @@ A zombie survival mod for Minecraft
 
 ### To be implemented:
 - Blunderbuss todo:
-  - Sound (currently arrow)
+  - Loading sound (currently arrow)
   - Implement loading animation
   - Implement loaded image / graphic (currently sends system messages)
 - New mineral / ore block: sulfur (used for gunpowder)
@@ -28,6 +28,9 @@ A zombie survival mod for Minecraft
 - New zombie behaviours (attracted to light and sound)
 - Settings (spawn rates etc.) adjustable via config files,
 - Reduced spawn rate of all creatures
+
+### Credits
+- Blunderbuss shooting sound by Pixabay via [Pixabay](https://pixabay.com/sound-effects/explosion-6055/)
 
 [//]: # (Notes:)
 [//]: # (nitre block and raw textures adapted from minecraft copper textures )

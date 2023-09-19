@@ -3,6 +3,7 @@ package net.askneller.zombieplague;
 import com.mojang.logging.LogUtils;
 import net.askneller.zombieplague.entity.SpawnEvents;
 import net.askneller.zombieplague.server.ServerEvents;
+import net.askneller.zombieplague.sound.ModSounds;
 import net.askneller.zombieplague.world.item.BlunderbussItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -70,6 +71,8 @@ public class ZombiePlague {
 
         ITEMS.register(modEventBus);
         BLOCKS.register(modEventBus);
+
+        ModSounds.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
