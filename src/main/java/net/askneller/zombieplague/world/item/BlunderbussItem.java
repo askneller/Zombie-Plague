@@ -53,7 +53,9 @@ public class BlunderbussItem extends ProjectileWeaponItem implements Vanishable 
     private static final double LOOK_SCALE_FACTOR = 0.2;
     private static final float START_OFFSET_SCALE_FACTOR = 0.4f;
 
-    public static final int DEFAULT_RANGE = 15; // Used for Mob attacks
+    public static final int DEFAULT_RANGE = 9; // Used for Mob attacks
+    public static final int MAX_DAMAGE_RANGE = 5;
+    public static final float MAX_DAMAGE = 30.0f;
 
     public BlunderbussItem(Properties p_43009_) {
         super(p_43009_);
