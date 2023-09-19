@@ -14,7 +14,7 @@ A zombie survival mod for Minecraft
 - New item: plant fibre, crafted from sticks or bamboo, used to make string
 - New item: blunderbuss
 - New Items: musket balls and blunderbuss shot, made from iron nuggets
-- New block: nitre
+- New block: nitre, generates above y = 64
 - New items: raw nitre and saltpetre (smelted from raw nitre)
 - New recipe: gunpowder, from charcoal and saltpetre
 
@@ -23,10 +23,11 @@ A zombie survival mod for Minecraft
   - Sound (currently arrow)
   - Implement loading animation
   - Implement loaded image / graphic (currently sends system messages)
-- Nitre todo:
-  - Add ore generation  
 - New mineral / ore block: sulfur (used for gunpowder)
 - New items (flintlock pistol and musket),
 - New zombie behaviours (attracted to light and sound)
 - Settings (spawn rates etc.) adjustable via config files,
 - Reduced spawn rate of all creatures
+
+[//]: # (Notes:)
+[//]: # (nitre block and raw textures adapted from minecraft copper textures )
