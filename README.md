@@ -14,16 +14,18 @@ A zombie survival mod for Minecraft
 - New item: plant fibre, crafted from sticks or bamboo, used to make string
 - New items: blunderbuss and musket
 - New Items: musket balls and blunderbuss shot, made from iron nuggets
-- New block: nitre, generates above y = 64
+- New block: nitre, generates above y = -16
+- New block: sulfur, generates above y = -16
 - New items: raw nitre and saltpetre (smelted from raw nitre)
-- New recipe: gunpowder, from charcoal and saltpetre
+- New items: raw sulfur and sulfur (made from raw sulfur)
+- New recipe: gunpowder, from charcoal, sulfur, and saltpetre
+- New recipe: string, from plant fibre
 
 ### To be implemented:
 - Blunderbuss todo:
   - Loading sound (currently arrow)
   - Implement loading animation
   - Implement loaded image / graphic (currently sends system messages)
-- New mineral / ore block: sulfur (used for gunpowder)
 - New items (flintlock pistol),
 - New zombie behaviours (attracted to light and sound)
 - Settings (spawn rates etc.) adjustable via config files,
