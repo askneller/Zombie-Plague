@@ -72,7 +72,8 @@ public class ZombiePlague {
                     .instrument(NoteBlockInstrument.BASEDRUM)
                     .requiresCorrectToolForDrops()
                     .strength(1.0F, 3.0F)));
-    public static final RegistryObject<Item> SULFUR_ORE_BLOCK_ITEM = ITEMS.register("sulfur_ore", () -> new BlockItem(NITRE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> SULFUR_ORE_BLOCK_ITEM = ITEMS.register("sulfur_ore", () -> new BlockItem(SULFUR_ORE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> RAW_SULFUR = ITEMS.register("raw_sulfur", () -> new Item(new Item.Properties()));
 
     public ZombiePlague() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

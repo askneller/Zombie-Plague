@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "zombieplague:sulfur_ore"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "zombieplague:raw_sulfur"
+  }
+}

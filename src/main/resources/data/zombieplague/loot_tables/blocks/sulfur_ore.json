@@ -24,7 +24,7 @@
                   }
                 }
               ],
-              "name": "zombieplague:nitre"
+              "name": "zombieplague:sulfur_ore"
             },
             {
               "type": "minecraft:item",
@@ -47,7 +47,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "zombieplague:raw_nitre"
+              "name": "zombieplague:raw_sulfur"
             }
           ]
         }
@@ -55,5 +55,5 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "zombieplague:blocks/nitre"
+  "random_sequence": "zombieplague:blocks/sulfur_ore"
 }
