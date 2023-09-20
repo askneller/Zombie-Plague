@@ -66,6 +66,14 @@ public class ZombiePlague {
                     .strength(1.0F, 3.0F)));
     public static final RegistryObject<Item> NITRE_BLOCK_ITEM = ITEMS.register("nitre", () -> new BlockItem(NITRE.get(), new Item.Properties()));
 
+    public static final RegistryObject<Block> SULFUR_ORE = BLOCKS.register("sulfur_ore", () -> new Block(
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .requiresCorrectToolForDrops()
+                    .strength(1.0F, 3.0F)));
+    public static final RegistryObject<Item> SULFUR_ORE_BLOCK_ITEM = ITEMS.register("sulfur_ore", () -> new BlockItem(NITRE.get(), new Item.Properties()));
+
     public ZombiePlague() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 

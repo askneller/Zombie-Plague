@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "zombieplague:block/nitre_ore"
+    "all": "zombieplague:block/sulfur_ore"
   }
 }
