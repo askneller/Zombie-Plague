@@ -1,5 +1,6 @@
 {
   "block.zombieplague.nitre": "Niter",
+  "block.zombieplague.sulfur_ore": "Sulfur Ore",
 
   "entity.zombieplague.blunderbuss_shot": "Blunderbuss Shot",
   "entity.zombieplague.sunproofzombie": "Zombie",
@@ -11,5 +12,8 @@
   "item.zombieplague.nitre": "Niter",
   "item.zombieplague.plant_fibre": "Plant Fiber",
   "item.zombieplague.raw_nitre": "Raw Niter",
-  "item.zombieplague.saltpetre": "Saltpeter"
+  "item.zombieplague.raw_sulfur": "Raw Sulfur",
+  "item.zombieplague.refined_sulfur": "Sulfur",
+  "item.zombieplague.saltpetre": "Saltpeter",
+  "item.zombieplague.sulfur_ore": "Sulfur Ore"
 }

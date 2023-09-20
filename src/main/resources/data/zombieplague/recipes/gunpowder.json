@@ -6,7 +6,13 @@
       "item": "zombieplague:saltpetre"
     },
     {
+      "item": "zombieplague:saltpetre"
+    },
+    {
       "item": "minecraft:charcoal"
+    },
+    {
+      "item": "zombieplague:refined_sulfur"
     }
   ],
   "result": {
