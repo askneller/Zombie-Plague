@@ -49,14 +49,12 @@ public class MusketItem extends ProjectileWeaponItem implements Vanishable {
     };
 
     // Particle constants
-    private static final int NUM_PARTICLES = 40;
+    private static final int NUM_PARTICLES = 5;
     private static final double Y_OFFSET = 1.5;
     private static final double LOOK_SCALE_FACTOR = 0.2;
     private static final float START_OFFSET_SCALE_FACTOR = 0.4f;
 
     public static final int DEFAULT_RANGE = 15; // Used for Mob attacks
-    public static final int MAX_DAMAGE_RANGE = 5;
-    public static final float MAX_DAMAGE = 30.0f;
 
     public MusketItem(Properties p_43009_) {
         super(p_43009_);
@@ -74,7 +72,8 @@ public class MusketItem extends ProjectileWeaponItem implements Vanishable {
     }
 
     public void notifyLoaded(Player player) {
-        if (player.level().isClientSide)
+        Level level = player.level();
+        if (level.isClientSide && level.getGameTime() % 5 == 0)
             player.sendSystemMessage(Component.literal("Loaded!")
                     .withStyle(ChatFormatting.RED));
     }

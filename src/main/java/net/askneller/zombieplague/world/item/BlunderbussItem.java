@@ -48,7 +48,7 @@ public class BlunderbussItem extends ProjectileWeaponItem implements Vanishable 
     };
 
     // Particle constants
-    private static final int NUM_PARTICLES = 40;
+    private static final int NUM_PARTICLES = 20;
     private static final double Y_OFFSET = 1.5;
     private static final double LOOK_SCALE_FACTOR = 0.2;
     private static final float START_OFFSET_SCALE_FACTOR = 0.4f;
@@ -73,7 +73,8 @@ public class BlunderbussItem extends ProjectileWeaponItem implements Vanishable 
     }
 
     public void notifyLoaded(Player player) {
-        if (player.level().isClientSide)
+        Level level = player.level();
+        if (level.isClientSide && level.getGameTime() % 5 == 0)
             player.sendSystemMessage(Component.literal("Loaded!")
                     .withStyle(ChatFormatting.RED));
     }
