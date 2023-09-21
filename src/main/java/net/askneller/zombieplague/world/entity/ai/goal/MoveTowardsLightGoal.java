@@ -3,11 +3,9 @@ package net.askneller.zombieplague.world.entity.ai.goal;
 import com.mojang.logging.LogUtils;
 import net.askneller.zombieplague.entity.LightSourceMarkerEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
@@ -23,50 +21,65 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
-public class MoveTowardsLightGoal extends Goal {
+public class MoveTowardsLightGoal extends RandomStrollGoal {
 
     private static final Logger logger = LogUtils.getLogger();
     public static final float DEFAULT_PROBABILITY = 0.95F; // todo for debugging
     // How far from a source the mob will stop when approaching
-    public static final double DESIRED_LIGHT_SOURCE_DISTANCE = 5.0;
+    public static final double DESIRED_LIGHT_SOURCE_DISTANCE = 10.0;
+    public static final double DEFAULT_SPEED_MODIFIER = 0.8;
+    public static final double MIN_DISTANCE = 5.0;
     public static final double MAX_LIGHT_SOURCE_DISTANCE = 50.0;
     public static final int CHECK_AROUND_DISTANCE = 3;
-    protected final Mob mob;
-    @Nullable
-    protected Entity lookAt;
-    protected final float lookDistance;
-    private int lookTime;
-    protected final float probability;
-    private final boolean onlyHorizontal;
-    protected final Class<? extends LivingEntity> lookAtType;
-    protected final TargetingConditions lookAtContext;
+//    protected final Mob mob;
+//    @Nullable
+//    protected Entity lookAt;
+//    protected final float lookDistance;
+//    private int lookTime;
+    protected final float probability = DEFAULT_PROBABILITY;
+//    private final boolean onlyHorizontal;
+//    protected final Class<? extends LivingEntity> lookAtType;
+//    protected final TargetingConditions lookAtContext;
 
     protected BlockPos destination;
 
-    public MoveTowardsLightGoal(Mob p_25520_, Class<? extends LivingEntity> p_25521_, float p_25522_) {
-        this(p_25520_, p_25521_, p_25522_, DEFAULT_PROBABILITY);
+//    public MoveTowardsLightGoal(Mob p_25520_, Class<? extends LivingEntity> p_25521_, float p_25522_) {
+//        this(p_25520_, p_25521_, p_25522_, DEFAULT_PROBABILITY);
+//    }
+
+//    public MoveTowardsLightGoal(Mob p_25524_, Class<? extends LivingEntity> p_25525_, float p_25526_, float p_25527_) {
+//        this(p_25524_, p_25525_, p_25526_, p_25527_, false);
+//    }
+
+//    public MoveTowardsLightGoal(Mob mob, Class<? extends LivingEntity> p_148119_, float lookDistance, float probability, boolean p_148122_) {
+////        logger.info("Created behaviour");
+//        super(mob, 1.0);
+//        this.mob = mob;
+//        this.lookAtType = p_148119_;
+//        this.lookDistance = lookDistance;
+//        this.probability = probability;
+//        this.onlyHorizontal = p_148122_;
+//        this.setFlags(EnumSet.of(Goal.Flag.LOOK));
+//        if (p_148119_ == Player.class) {
+//            this.lookAtContext = TargetingConditions.forNonCombat().range((double)lookDistance).selector((p_25531_) -> {
+//                return EntitySelector.notRiding(mob).test(p_25531_);
+//            });
+//        } else {
+//            this.lookAtContext = TargetingConditions.forNonCombat().range((double)lookDistance);
+//        }
+//
+//    }
+
+    public MoveTowardsLightGoal(PathfinderMob mob, double speedModifier) {
+        super(mob, speedModifier);
     }
 
-    public MoveTowardsLightGoal(Mob p_25524_, Class<? extends LivingEntity> p_25525_, float p_25526_, float p_25527_) {
-        this(p_25524_, p_25525_, p_25526_, p_25527_, false);
+    public MoveTowardsLightGoal(PathfinderMob mob, double speedModifier, int interval) {
+        super(mob, speedModifier, interval);
     }
 
-    public MoveTowardsLightGoal(Mob p_148118_, Class<? extends LivingEntity> p_148119_, float lookDistance, float probability, boolean p_148122_) {
-//        logger.info("Created behaviour");
-        this.mob = p_148118_;
-        this.lookAtType = p_148119_;
-        this.lookDistance = lookDistance;
-        this.probability = probability;
-        this.onlyHorizontal = p_148122_;
-        this.setFlags(EnumSet.of(Goal.Flag.LOOK));
-        if (p_148119_ == Player.class) {
-            this.lookAtContext = TargetingConditions.forNonCombat().range((double)lookDistance).selector((p_25531_) -> {
-                return EntitySelector.notRiding(p_148118_).test(p_25531_);
-            });
-        } else {
-            this.lookAtContext = TargetingConditions.forNonCombat().range((double)lookDistance);
-        }
-
+    public MoveTowardsLightGoal(PathfinderMob mob, double speedModifier, int interval, boolean checkNoActionTime) {
+        super(mob, speedModifier, interval, checkNoActionTime);
     }
 
     public boolean canUse() {
@@ -144,6 +157,7 @@ public class MoveTowardsLightGoal extends Goal {
                     if (lineOfSight) {
                         logger.info("Setting destination {}", entity.blockPosition());
                         this.destination = entity.blockPosition();
+                        setDestination(this.destination);
                         return true;
                     }
                     else {
@@ -156,6 +170,7 @@ public class MoveTowardsLightGoal extends Goal {
                         if (los) {
                             logger.info("Setting destination {}", pos);
                             this.destination = pos;
+                            setDestination(this.destination);
                             return true;
                         }
                         blockPos = pos.below(CHECK_AROUND_DISTANCE);
@@ -164,6 +179,7 @@ public class MoveTowardsLightGoal extends Goal {
                         if (los) {
                             logger.info("Setting destination {}", pos);
                             this.destination = pos;
+                            setDestination(this.destination);
                             return true;
                         }
                         blockPos = pos.north(CHECK_AROUND_DISTANCE);
@@ -172,6 +188,7 @@ public class MoveTowardsLightGoal extends Goal {
                         if (los) {
                             logger.info("Setting destination {}", pos);
                             this.destination = pos;
+                            setDestination(this.destination);
                             return true;
                         }
                         blockPos = pos.south(CHECK_AROUND_DISTANCE);
@@ -180,6 +197,7 @@ public class MoveTowardsLightGoal extends Goal {
                         if (los) {
                             logger.info("Setting destination {}", pos);
                             this.destination = pos;
+                            setDestination(this.destination);
                             return true;
                         }
                         blockPos = pos.east(CHECK_AROUND_DISTANCE);
@@ -188,6 +206,7 @@ public class MoveTowardsLightGoal extends Goal {
                         if (los) {
                             logger.info("Setting destination {}", pos);
                             this.destination = pos;
+                            setDestination(this.destination);
                             return true;
                         }
                         blockPos = pos.west(CHECK_AROUND_DISTANCE);
@@ -196,6 +215,7 @@ public class MoveTowardsLightGoal extends Goal {
                         if (los) {
                             logger.info("Setting destination {}", pos);
                             this.destination = pos;
+                            setDestination(this.destination);
                             return true;
                         }
                     }
@@ -229,26 +249,50 @@ public class MoveTowardsLightGoal extends Goal {
         if (!entities.isEmpty()) {
             logger.info("Can continue, entities at pos {}: {}", this.destination, entities.size());
             logger.info("{}", entities.get(0));
+            boolean anyMatch = entities.stream().anyMatch((entity -> {
+                logger.info("Distance {}, from {}", this.mob.distanceTo(entity), this.mob.blockPosition());
+                boolean inDistance = this.mob.distanceTo(entity) <= MIN_DISTANCE;
+                if (inDistance) {
+                    logger.info("inDistance {}, {}", entity, this.mob.distanceTo(entity));
+                    return true;
+                }
+                return false;
+            }));
+            logger.info("anyMatch {}", anyMatch);
+            return !anyMatch;
+
         }
         return !entities.isEmpty();
     }
 
+    private void setDestination(BlockPos pos) {
+        if (pos != null) {
+            this.wantedX = pos.getX();
+            this.wantedY = pos.getY();
+            this.wantedZ = pos.getZ();
+        }
+    }
+
     public void start() {
-        this.lookTime = this.adjustedTickDelay(40 + this.mob.getRandom().nextInt(40));
+        logger.info("Starting go to {}", this.destination);
+        super.start();
+//        this.lookTime = this.adjustedTickDelay(40 + this.mob.getRandom().nextInt(40));
+        logger.info("nav target {}", this.mob.getNavigation().getTargetPos());
     }
 
     public void stop() {
-        this.lookAt = null;
+        super.stop();
+//        this.lookAt = null;
     }
 
-    public void tick() {
+//    public void tick() {
 //        if (this.lookAt.isAlive()) {
 //            double d0 = this.onlyHorizontal ? this.mob.getEyeY() : this.lookAt.getEyeY();
 //            this.mob.getLookControl().setLookAt(this.lookAt.getX(), d0, this.lookAt.getZ());
 //            --this.lookTime;
 //        }
 //        logger.info("Tick");
-    }
+//    }
 
     public boolean hasLineOfSight(Entity from, BlockPos to, Level toLevel, Entity p_147185_) {
         if (toLevel != from.level()) {

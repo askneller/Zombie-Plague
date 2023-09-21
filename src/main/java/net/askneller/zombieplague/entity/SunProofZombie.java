@@ -14,6 +14,8 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import org.slf4j.Logger;
 
+import static net.askneller.zombieplague.world.entity.ai.goal.MoveTowardsLightGoal.DEFAULT_SPEED_MODIFIER;
+
 public class SunProofZombie extends Zombie {
 
     private static final Logger logger = LogUtils.getLogger();
@@ -25,7 +27,7 @@ public class SunProofZombie extends Zombie {
 
     protected void addBehaviourGoals() {
         super.addBehaviourGoals();
-        this.goalSelector.addGoal(7, new MoveTowardsLightGoal(this, Player.class, 8.0f));
+        this.goalSelector.addGoal(7, new MoveTowardsLightGoal(this, DEFAULT_SPEED_MODIFIER, 100));
         this.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(this, Animal.class, true));
     }
 
