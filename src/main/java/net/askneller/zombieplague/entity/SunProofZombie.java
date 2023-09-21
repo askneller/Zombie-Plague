@@ -1,12 +1,14 @@
 package net.askneller.zombieplague.entity;
 
 import com.mojang.logging.LogUtils;
+import net.askneller.zombieplague.world.entity.ai.goal.MoveTowardsLightGoal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
@@ -23,6 +25,7 @@ public class SunProofZombie extends Zombie {
 
     protected void addBehaviourGoals() {
         super.addBehaviourGoals();
+        this.goalSelector.addGoal(7, new MoveTowardsLightGoal(this, Player.class, 8.0f));
         this.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(this, Animal.class, true));
     }
 
