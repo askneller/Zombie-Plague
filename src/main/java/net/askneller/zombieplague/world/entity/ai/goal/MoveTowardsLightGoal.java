@@ -87,7 +87,7 @@ public class MoveTowardsLightGoal extends RandomStrollGoal {
 //            logger.info("Below probability");
             return false;
         } else {
-            Player nearestPlayer = this.mob.level().getNearestPlayer(this.mob, 10.0);
+            Player nearestPlayer = this.mob.level().getNearestPlayer(this.mob, 15.0);
             if (nearestPlayer == null) {
                 return false;
             }
@@ -107,13 +107,15 @@ public class MoveTowardsLightGoal extends RandomStrollGoal {
 //            return true;
 
             // it has to be dark enough to see the light
-            // todo ignore for now
-//            int rawBrightness = this.mob.level().getLightEngine().getRawBrightness(this.mob.blockPosition(), 0);
-//            int lightValue = this.mob.level().getLightEngine().getLayerListener(LightLayer.BLOCK).getLightValue(this.mob.blockPosition());
-//            if (lightValue > LightEngine.MAX_LEVEL / 3) {
-//                logger.info("Too bright, raw {}, val {}", rawBrightness, lightValue);
-//                return false;
-//            }
+            int rawBrightness = this.mob.level().getLightEngine().getRawBrightness(this.mob.blockPosition(), 0);
+            int lightValue = this.mob.level().getLightEngine().getLayerListener(LightLayer.BLOCK).getLightValue(this.mob.blockPosition());
+            int maxLocalRawBrightness = this.mob.level().getMaxLocalRawBrightness(this.mob.blockPosition());
+            if (maxLocalRawBrightness > LightEngine.MAX_LEVEL / 2) {
+                logger.info("Too bright, raw {}, val {}", rawBrightness, lightValue);
+                logger.info("Sky darken {}", this.mob.level().getSkyDarken());
+                logger.info("Max local {}", this.mob.level().getMaxLocalRawBrightness(this.mob.blockPosition()));
+                return false;
+            }
 
             // the mob is already near light sources and can see at least one directly
             // ignore any sources that the mob cannot see "near" (a few blocks either side)
@@ -259,6 +261,7 @@ public class MoveTowardsLightGoal extends RandomStrollGoal {
                 return false;
             }));
             logger.info("anyMatch {}", anyMatch);
+            logger.info("NAV {}", this.mob.getNavigation().isInProgress());
             return !anyMatch;
 
         }
