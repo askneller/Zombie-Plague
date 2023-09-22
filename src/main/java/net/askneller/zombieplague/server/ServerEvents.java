@@ -1,6 +1,7 @@
 package net.askneller.zombieplague.server;
 
 import com.mojang.logging.LogUtils;
+import net.askneller.zombieplague.client.WeaponLoadingOverlay;
 import net.askneller.zombieplague.entity.LightSourceMarkerEntity;
 import net.askneller.zombieplague.util.ModTags;
 import net.askneller.zombieplague.world.item.BlunderbussItem;
@@ -21,9 +22,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import org.slf4j.Logger;
 
+import static net.askneller.zombieplague.ZombiePlague.BLUNDERBUSS;
 import java.util.List;
 
 import static net.askneller.zombieplague.ZombiePlague.EXHAUSTION_PER_TICK;
+import static net.askneller.zombieplague.ZombiePlague.MUSKET;
 
 public class ServerEvents {
 
@@ -59,6 +62,7 @@ public class ServerEvents {
 //                    .getItem().getItem(), event.getDuration());
             // TODO change to graphic-based notification like crossbow
             Item item = event.getItem().getItem();
+            updateLoading(item, event.getDuration());
             if (item instanceof BlunderbussItem && event.getDuration() <= 0) {
                 ((BlunderbussItem) item).notifyLoaded((Player) event.getEntity());
             } else if (item instanceof MusketItem && event.getDuration() <= 0) {
@@ -67,11 +71,26 @@ public class ServerEvents {
         }
     }
 
+    private static void updateLoading(Item item, int remaining) {
+        if (remaining <= 0) {
+            return;
+        }
+        float percent = (float) remaining / item.getUseDuration(null);
+        if (item instanceof BlunderbussItem) {
+            WeaponLoadingOverlay.update("Loading Blunderbuss", (1.0f - percent));
+        } else if (item instanceof MusketItem) {
+            WeaponLoadingOverlay.update("Loading Musket", (1.0f - percent));
+        }
+    }
+
     @SubscribeEvent
     public static void onUseItem(LivingEntityUseItemEvent.Stop event) {
 //        if (event.getEntity() instanceof Player) {
 //            logger.info("LivingEntityUseItemEvent.Stop: item {}, duration {}", event
 //                    .getItem().getItem(), event.getDuration());
+//            if (event.getItem().is(BLUNDERBUSS.get()) || event.getItem().is(MUSKET.get())) {
+//                WeaponLoadingOverlay.clear();
+//            }
 //        }
     }
 
