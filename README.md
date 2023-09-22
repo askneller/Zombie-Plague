@@ -27,6 +27,7 @@ A zombie survival mod for Minecraft
   - Implement loading animation
   - Implement loaded image / graphic (currently sends system messages)
 - New items (flintlock pistol),
+- Improve loading gui to progress bar (currently text)
 - New zombie behaviours (attracted to light and sound)
 - Settings (spawn rates etc.) adjustable via config files,
 - Reduced spawn rate of all creatures
