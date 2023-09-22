@@ -35,6 +35,7 @@ public class ModEntities {
     public static EntityType<? extends Zombie> SUN_PROOF_ZOMBIE;
     public static EntityType<BlunderbussShot> BLUNDERBUSS_SHOT;
     public static EntityType<MusketBall> MUSKET_BALL;
+    public static EntityType<LightSourceMarkerEntity> LIGHT_SOURCE_MARKER;
 
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModEntityEvents {
@@ -62,6 +63,12 @@ public class ModEntities {
                                 .sized(0.5F, 0.5F)
                                 .clientTrackingRange(4)
                                 .updateInterval(20)
+                );
+
+                LIGHT_SOURCE_MARKER = build(event.getForgeRegistry(), "zombieplague:light_source_marker",
+                        EntityType.Builder.<LightSourceMarkerEntity>of(LightSourceMarkerEntity::new, MobCategory.MISC)
+                                .sized(0, 0)
+                                .clientTrackingRange(0)
                 );
             }
         }

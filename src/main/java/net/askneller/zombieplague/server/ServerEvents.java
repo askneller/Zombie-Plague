@@ -2,20 +2,32 @@ package net.askneller.zombieplague.server;
 
 import com.mojang.logging.LogUtils;
 import net.askneller.zombieplague.client.WeaponLoadingOverlay;
+import net.askneller.zombieplague.entity.LightSourceMarkerEntity;
+import net.askneller.zombieplague.util.ModTags;
 import net.askneller.zombieplague.world.item.BlunderbussItem;
 import net.askneller.zombieplague.world.item.MusketItem;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import org.slf4j.Logger;
 
 import static net.askneller.zombieplague.ZombiePlague.BLUNDERBUSS;
+import java.util.List;
+
 import static net.askneller.zombieplague.ZombiePlague.EXHAUSTION_PER_TICK;
 import static net.askneller.zombieplague.ZombiePlague.MUSKET;
+import static net.askneller.zombieplague.entity.ModEntities.LIGHT_SOURCE_MARKER;
 
 public class ServerEvents {
 
@@ -99,4 +111,49 @@ public class ServerEvents {
         }
     }
     */
+
+
+    @SubscribeEvent
+    public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
+        EntityType<?> type = event.getEntity().getType();
+        if (type.equals(EntityType.MARKER) || type.equals(LIGHT_SOURCE_MARKER)) {
+            logger.info("Join {}", event.getEntity());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlaceBlock(BlockEvent.EntityPlaceEvent event) {
+        if (event.getPlacedBlock().is(ModTags.Blocks.LIGHT_SOURCE)) {
+            logger.info("Placed {}", event.getPlacedBlock());
+            LightSourceMarkerEntity entity = new LightSourceMarkerEntity(LIGHT_SOURCE_MARKER, event.getEntity().level());
+            BlockPos pos = event.getPos();
+            entity.setPos(pos.getX(), pos.getY(), pos.getZ());
+            event.getEntity().level().addFreshEntity(entity);
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onRemoveBlock(BlockEvent.BreakEvent event) {
+        if (event.getState().is(ModTags.Blocks.LIGHT_SOURCE)) {
+            logger.info("Removed {}", event.getState());
+            BlockPos pos = event.getPos();
+            AABB aabb = new AABB(pos.getX() - 1.0D,
+                    pos.getY() - 1.0D,
+                    pos.getZ() - 1.0D,
+                    pos.getX() + 1.0D,
+                    pos.getY() + 1.0D,
+                    pos.getZ() + 1.0D);
+            List<LightSourceMarkerEntity> entitiesOfClass =
+                    event.getLevel().getEntitiesOfClass(LightSourceMarkerEntity.class, aabb);
+            logger.info("entitiesOfClass {}", entitiesOfClass.size());
+            if (!entitiesOfClass.isEmpty()) {
+                logger.info("Discarding {}", entitiesOfClass);
+                entitiesOfClass.forEach(Entity::discard);
+                entitiesOfClass =
+                        event.getLevel().getEntitiesOfClass(LightSourceMarkerEntity.class, aabb);
+                logger.info("after entitiesOfClass {}", entitiesOfClass.size());
+            }
+        }
+    }
+
 }
