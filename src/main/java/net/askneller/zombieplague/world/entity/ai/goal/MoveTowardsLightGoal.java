@@ -111,9 +111,11 @@ public class MoveTowardsLightGoal extends RandomStrollGoal {
             int lightValue = this.mob.level().getLightEngine().getLayerListener(LightLayer.BLOCK).getLightValue(this.mob.blockPosition());
             int maxLocalRawBrightness = this.mob.level().getMaxLocalRawBrightness(this.mob.blockPosition());
             if (maxLocalRawBrightness > LightEngine.MAX_LEVEL / 2) {
-                logger.info("Too bright, raw {}, val {}", rawBrightness, lightValue);
-                logger.info("Sky darken {}", this.mob.level().getSkyDarken());
-                logger.info("Max local {}", this.mob.level().getMaxLocalRawBrightness(this.mob.blockPosition()));
+                if (printDebug(this.mob.level())) {
+                    logger.info("Too bright, raw {}, val {}", rawBrightness, lightValue);
+                    logger.info("Sky darken {}", this.mob.level().getSkyDarken());
+                    logger.info("Max local {}", this.mob.level().getMaxLocalRawBrightness(this.mob.blockPosition()));
+                }
                 return false;
             }
 
@@ -128,15 +130,15 @@ public class MoveTowardsLightGoal extends RandomStrollGoal {
                             this.mob.getZ() + DESIRED_LIGHT_SOURCE_DISTANCE),
                     (entity -> entity instanceof LightSourceMarkerEntity));
             if (!closeLights.isEmpty()) {
-                logger.info("Can use, close lights: {}", closeLights.size());
+                if (printDebug(this.mob.level())) logger.info("Can use, close lights: {}", closeLights.size());
                 boolean lineOfSight = false;
                 for (Entity entity: closeLights) {
                     lineOfSight = this.mob.hasLineOfSight(closeLights.get(0));
-                    logger.info("line of sight to close {}: {}", entity, lineOfSight);
+                    if (printDebug(this.mob.level())) logger.info("line of sight to close {}: {}", entity, lineOfSight);
                     if (lineOfSight) return false;
                 }
             } else {
-                logger.info("None close");
+                if (printDebug(this.mob.level())) logger.info("None close");
             }
 
             // there is a light source in range
@@ -149,15 +151,15 @@ public class MoveTowardsLightGoal extends RandomStrollGoal {
                             this.mob.getY() + MAX_LIGHT_SOURCE_DISTANCE,
                             this.mob.getZ() + MAX_LIGHT_SOURCE_DISTANCE),
                     (entity -> entity instanceof LightSourceMarkerEntity));
-            logger.info("canUse, num in max: {}", inRangeLights.size());
+            if (printDebug(this.mob.level())) logger.info("canUse, num in max: {}", inRangeLights.size());
             if (!inRangeLights.isEmpty()) {
-                logger.info("Can use, lights in range: {}", inRangeLights.size());
+                if (printDebug(this.mob.level())) logger.info("Can use, lights in range: {}", inRangeLights.size());
                 boolean lineOfSight = false;
                 for (Entity entity: inRangeLights) {
                     lineOfSight = this.mob.hasLineOfSight(entity);
-                    logger.info("Direct line of sight to {}", entity);
+                    if (printDebug(this.mob.level())) logger.info("Direct line of sight to {}", entity);
                     if (lineOfSight) {
-                        logger.info("Setting destination {}", entity.blockPosition());
+                        if (printDebug(this.mob.level())) logger.info("Setting destination {}", entity.blockPosition());
                         this.destination = entity.blockPosition();
                         setDestination(this.destination);
                         return true;
@@ -168,54 +170,54 @@ public class MoveTowardsLightGoal extends RandomStrollGoal {
                         // will implement this by seeing if the entity has LoS to blocks near the light source
                         BlockPos blockPos = pos.above(CHECK_AROUND_DISTANCE);
                         boolean los = hasLineOfSight(this.mob, blockPos, entity.level(), entity);
-                        logger.info("LoS to above {}: {}", blockPos, los);
+                        if (printDebug(this.mob.level())) logger.info("LoS to above {}: {}", blockPos, los);
                         if (los) {
-                            logger.info("Setting destination {}", pos);
+                            if (printDebug(this.mob.level())) logger.info("Setting destination {}", pos);
                             this.destination = pos;
                             setDestination(this.destination);
                             return true;
                         }
                         blockPos = pos.below(CHECK_AROUND_DISTANCE);
                         los = hasLineOfSight(this.mob, blockPos, entity.level(), entity);
-                        logger.info("LoS to below {}: {}", blockPos, los);
+                        if (printDebug(this.mob.level())) logger.info("LoS to below {}: {}", blockPos, los);
                         if (los) {
-                            logger.info("Setting destination {}", pos);
+                            if (printDebug(this.mob.level())) logger.info("Setting destination {}", pos);
                             this.destination = pos;
                             setDestination(this.destination);
                             return true;
                         }
                         blockPos = pos.north(CHECK_AROUND_DISTANCE);
                         los = hasLineOfSight(this.mob, blockPos, entity.level(), entity);
-                        logger.info("LoS to north {}: {}", blockPos, los);
+                        if (printDebug(this.mob.level())) logger.info("LoS to north {}: {}", blockPos, los);
                         if (los) {
-                            logger.info("Setting destination {}", pos);
+                            if (printDebug(this.mob.level())) logger.info("Setting destination {}", pos);
                             this.destination = pos;
                             setDestination(this.destination);
                             return true;
                         }
                         blockPos = pos.south(CHECK_AROUND_DISTANCE);
                         los = hasLineOfSight(this.mob, blockPos, entity.level(), entity);
-                        logger.info("LoS to south {}: {}", blockPos, los);
+                        if (printDebug(this.mob.level())) logger.info("LoS to south {}: {}", blockPos, los);
                         if (los) {
-                            logger.info("Setting destination {}", pos);
+                            if (printDebug(this.mob.level())) logger.info("Setting destination {}", pos);
                             this.destination = pos;
                             setDestination(this.destination);
                             return true;
                         }
                         blockPos = pos.east(CHECK_AROUND_DISTANCE);
                         los = hasLineOfSight(this.mob, blockPos, entity.level(), entity);
-                        logger.info("LoS to east {}: {}", blockPos, los);
+                        if (printDebug(this.mob.level())) logger.info("LoS to east {}: {}", blockPos, los);
                         if (los) {
-                            logger.info("Setting destination {}", pos);
+                            if (printDebug(this.mob.level())) logger.info("Setting destination {}", pos);
                             this.destination = pos;
                             setDestination(this.destination);
                             return true;
                         }
                         blockPos = pos.west(CHECK_AROUND_DISTANCE);
                         los = hasLineOfSight(this.mob, blockPos, entity.level(), entity);
-                        logger.info("LoS to west {}: {}", blockPos, los);
+                        if (printDebug(this.mob.level())) logger.info("LoS to west {}: {}", blockPos, los);
                         if (los) {
-                            logger.info("Setting destination {}", pos);
+                            if (printDebug(this.mob.level())) logger.info("Setting destination {}", pos);
                             this.destination = pos;
                             setDestination(this.destination);
                             return true;
@@ -249,19 +251,19 @@ public class MoveTowardsLightGoal extends RandomStrollGoal {
                         this.destination.getZ() + 2.0D),
                 (entity -> entity instanceof LightSourceMarkerEntity));
         if (!entities.isEmpty()) {
-            logger.info("Can continue, entities at pos {}: {}", this.destination, entities.size());
-            logger.info("{}", entities.get(0));
+            if (printDebug(this.mob.level())) logger.info("Can continue, entities at pos {}: {}", this.destination, entities.size());
+            if (printDebug(this.mob.level())) logger.info("{}", entities.get(0));
             boolean anyMatch = entities.stream().anyMatch((entity -> {
-                logger.info("Distance {}, from {}", this.mob.distanceTo(entity), this.mob.blockPosition());
+                if (printDebug(this.mob.level())) logger.info("Distance {}, from {}", this.mob.distanceTo(entity), this.mob.blockPosition());
                 boolean inDistance = this.mob.distanceTo(entity) <= MIN_DISTANCE;
                 if (inDistance) {
-                    logger.info("inDistance {}, {}", entity, this.mob.distanceTo(entity));
+                    if (printDebug(this.mob.level())) logger.info("inDistance {}, {}", entity, this.mob.distanceTo(entity));
                     return true;
                 }
                 return false;
             }));
-            logger.info("anyMatch {}", anyMatch);
-            logger.info("NAV {}", this.mob.getNavigation().isInProgress());
+            if (printDebug(this.mob.level())) logger.info("anyMatch {}", anyMatch);
+            if (printDebug(this.mob.level())) logger.info("NAV {}", this.mob.getNavigation().isInProgress());
             return !anyMatch;
 
         }
@@ -277,10 +279,10 @@ public class MoveTowardsLightGoal extends RandomStrollGoal {
     }
 
     public void start() {
-        logger.info("Starting go to {}", this.destination);
+        if (printDebug(this.mob.level())) logger.info("Starting go to {}", this.destination);
         super.start();
 //        this.lookTime = this.adjustedTickDelay(40 + this.mob.getRandom().nextInt(40));
-        logger.info("nav target {}", this.mob.getNavigation().getTargetPos());
+        if (printDebug(this.mob.level())) logger.info("nav target {}", this.mob.getNavigation().getTargetPos());
     }
 
     public void stop() {
@@ -311,4 +313,7 @@ public class MoveTowardsLightGoal extends RandomStrollGoal {
         }
     }
 
+    private boolean printDebug(Level level) {
+        return level.getGameTime() % 20 == 0;
+    }
 }
