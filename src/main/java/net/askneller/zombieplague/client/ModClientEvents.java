@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.ZombieRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -34,5 +35,10 @@ public class ModClientEvents {
         event.registerEntityRenderer(SUN_PROOF_ZOMBIE, ZombieRenderer::new);
         event.registerEntityRenderer(BLUNDERBUSS_SHOT, BlunderbussShotRenderer::new);
         event.registerEntityRenderer(MUSKET_BALL, MusketBallRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
+        event.registerAboveAll("loading_weapon", WeaponLoadingOverlay.HUD_THIRST);
     }
 }

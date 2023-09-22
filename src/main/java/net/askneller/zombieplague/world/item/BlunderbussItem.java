@@ -2,17 +2,14 @@ package net.askneller.zombieplague.world.item;
 
 import com.google.common.collect.Lists;
 import com.mojang.logging.LogUtils;
+import net.askneller.zombieplague.client.WeaponLoadingOverlay;
 import net.askneller.zombieplague.entity.ModEntities;
 import net.askneller.zombieplague.sound.ModSounds;
 import net.askneller.zombieplague.world.entity.projectile.BlunderbussShot;
-import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -74,9 +71,10 @@ public class BlunderbussItem extends ProjectileWeaponItem implements Vanishable 
 
     public void notifyLoaded(Player player) {
         Level level = player.level();
-        if (level.isClientSide && level.getGameTime() % 5 == 0)
-            player.sendSystemMessage(Component.literal("Loaded!")
-                    .withStyle(ChatFormatting.RED));
+//        if (level.isClientSide && level.getGameTime() % 5 == 0)
+//            player.sendSystemMessage(Component.literal("Loaded!")
+//                    .withStyle(ChatFormatting.RED));
+        WeaponLoadingOverlay.update("Loaded!");
     }
 
     @Override
@@ -96,9 +94,9 @@ public class BlunderbussItem extends ProjectileWeaponItem implements Vanishable 
 //                this.midLoadSoundPlayed = false;
                 player.startUsingItem(hand);
                 // TODO change to graphic-based notification like crossbow
-                if (level.isClientSide())
-                    player.sendSystemMessage(Component.literal("Loading blunderbuss")
-                            .withStyle(ChatFormatting.AQUA));
+//                if (level.isClientSide())
+//                    player.sendSystemMessage(Component.literal("Loading blunderbuss")
+//                            .withStyle(ChatFormatting.AQUA));
             }
 
             return InteractionResultHolder.consume(itemstack);
