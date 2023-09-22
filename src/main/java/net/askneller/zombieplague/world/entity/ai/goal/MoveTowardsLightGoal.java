@@ -47,6 +47,8 @@ public class MoveTowardsLightGoal extends RandomStrollGoal {
             Player nearestPlayer = this.mob.level().getNearestPlayer(this.mob, 15.0);
             if (nearestPlayer == null) {
                 return false;
+            } else {
+                if (this.mob.level().getGameTime() % 5 == 0) logger.info("Can use {}", this.mob);
             }
 
             // it has to be dark enough to see the light

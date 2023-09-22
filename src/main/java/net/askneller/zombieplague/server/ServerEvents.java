@@ -27,6 +27,7 @@ import java.util.List;
 
 import static net.askneller.zombieplague.ZombiePlague.EXHAUSTION_PER_TICK;
 import static net.askneller.zombieplague.ZombiePlague.MUSKET;
+import static net.askneller.zombieplague.entity.ModEntities.LIGHT_SOURCE_MARKER;
 
 public class ServerEvents {
 
@@ -113,8 +114,9 @@ public class ServerEvents {
 
 
     @SubscribeEvent
-    public static void onEntityLeaveLevel(EntityJoinLevelEvent event) {
-        if (event.getEntity().getType().equals(EntityType.MARKER)) {
+    public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
+        EntityType<?> type = event.getEntity().getType();
+        if (type.equals(EntityType.MARKER) || type.equals(LIGHT_SOURCE_MARKER)) {
             logger.info("Join {}", event.getEntity());
         }
     }
@@ -123,7 +125,7 @@ public class ServerEvents {
     public static void onPlaceBlock(BlockEvent.EntityPlaceEvent event) {
         if (event.getPlacedBlock().is(ModTags.Blocks.LIGHT_SOURCE)) {
             logger.info("Placed {}", event.getPlacedBlock());
-            LightSourceMarkerEntity entity = new LightSourceMarkerEntity(EntityType.MARKER, event.getEntity().level());
+            LightSourceMarkerEntity entity = new LightSourceMarkerEntity(LIGHT_SOURCE_MARKER, event.getEntity().level());
             BlockPos pos = event.getPos();
             entity.setPos(pos.getX(), pos.getY(), pos.getZ());
             event.getEntity().level().addFreshEntity(entity);
