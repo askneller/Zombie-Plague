@@ -6,7 +6,8 @@ A zombie survival mod for Minecraft
 - Zombies:
   - only monsters that now spawn, will spawn on the surface, 
   - no longer catch fire in the sun, no longer summon aid,
-  - will attack animals (with low priority)
+  - will attack animals (with low priority),
+  - are attracted to light at night (simple first pass implementation)
 - Player hunger deteriorates faster than the base game,
 - Domesticated animals (cows, sheep, pigs, and chickens) spawn at reduced rates,
 - Villages no longer spawn,
