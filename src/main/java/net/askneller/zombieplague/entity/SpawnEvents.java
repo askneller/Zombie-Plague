@@ -152,6 +152,10 @@ public class SpawnEvents {
             printStats();
         }
         */
+        if (event.getEntity().getType().equals(SUN_PROOF_ZOMBIE)
+                && event.getSpawnType() != MobSpawnType.CHUNK_GENERATION) {
+            logger.info("Spawning zombie: {}", event.getSpawnType());
+        }
     }
 
     // Disallow zombies from summoning aid
